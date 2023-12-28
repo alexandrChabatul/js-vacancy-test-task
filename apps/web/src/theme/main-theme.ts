@@ -3,10 +3,9 @@ import { createTheme } from '@mantine/core';
 import * as components from './components';
 
 const mainTheme = createTheme({
-  fontFamily: 'Roboto, sans-serif',
-  fontFamilyMonospace: 'monospace',
+  fontFamily: 'Inter, sans-serif',
   headings: {
-    fontFamily: 'Roboto, sans-serif',
+    fontFamily: 'Inter, sans-serif',
     fontWeight: '600',
   },
   lineHeights: {
@@ -14,6 +13,7 @@ const mainTheme = createTheme({
   },
   primaryColor: 'blue',
   primaryShade: 6,
+  defaultRadius: 8,
   components,
 });
 
