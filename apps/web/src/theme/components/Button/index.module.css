@@ -3,24 +3,26 @@
 }
 
 .root {
+  background-color: var(--mantine-color-custom-blue-5);
+
   &:hover {
-    background-color: #5692EF;
+    background-color: var(--mantine-color-custom-blue-4);
   }
   &:active {
-    background-color: #235FBC;
+    background-color: var(--mantine-color-custom-blue-6);
   }
   &[data-variant='secondary'] {
-    border-color: #CFCFCF;
+    border-color: var(--mantine-color-grey-2);
     background-color: transparent;
-    color: #CFCFCF;
+    color: var(--mantine-color-grey-4);
 
     &:hover {
-      border-color: #5692EF;
-      color: #5692EF;
+      border-color: var(--mantine-color-custom-blue-4);
+      color: var(--mantine-color-custom-blue-4);
     }
     &:active {
-      border-color: #235FBC;
-      color: #235FBC;
+      border-color: var(--mantine-color-custom-blue-6);
+      color: var(--mantine-color-custom-blue-6);
     }
   }
 }

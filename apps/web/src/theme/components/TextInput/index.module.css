@@ -4,7 +4,13 @@
   &::placeholder,
   &:disabled,
   &:disabled::placeholder {
-    color: '#6d747b !important';
+    color: '#a3a3a3 !important';
+  }
+
+  &:hover,
+  &:active,
+  &:not(:placeholder-shown) {
+    border-color: var(--mantine-color-custom-blue-5);
   }
 }
 
