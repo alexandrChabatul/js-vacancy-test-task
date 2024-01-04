@@ -1,3 +1,28 @@
 .label {
   font-weight: 500;
 }
+
+.root {
+  background-color: var(--mantine-color-custom-blue-5);
+
+  &:hover {
+    background-color: var(--mantine-color-custom-blue-4);
+  }
+  &:active {
+    background-color: var(--mantine-color-custom-blue-6);
+  }
+  &[data-variant='secondary'] {
+    border-color: var(--mantine-color-grey-2);
+    background-color: transparent;
+    color: var(--mantine-color-grey-4);
+
+    &:hover {
+      border-color: var(--mantine-color-custom-blue-4);
+      color: var(--mantine-color-custom-blue-4);
+    }
+    &:active {
+      border-color: var(--mantine-color-custom-blue-6);
+      color: var(--mantine-color-custom-blue-6);
+    }
+  }
+}

@@ -3,7 +3,15 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Head from 'next/head';
 import { NextPage } from 'next';
-import { TextInput, PasswordInput, Button, Group, Stack, Title, Alert } from '@mantine/core';
+import {
+  TextInput,
+  PasswordInput,
+  Button,
+  Group,
+  Stack,
+  Title,
+  Alert,
+} from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';
 
 import { accountApi } from 'resources/account';
@@ -26,7 +34,10 @@ type SignInParams = z.infer<typeof schema> & { credentials?: string };
 
 const SignIn: NextPage = () => {
   const {
-    register, handleSubmit, formState: { errors }, setError,
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
   } = useForm<SignInParams>({ resolver: zodResolver(schema) });
 
   const { mutate: signIn, isLoading: isSignInLoading } = accountApi.useSignIn<SignInParams>();
@@ -77,12 +88,7 @@ const SignIn: NextPage = () => {
               </Link>
             </Stack>
 
-            <Button
-              loading={isSignInLoading}
-              type="submit"
-              fullWidth
-              mt={34}
-            >
+            <Button loading={isSignInLoading} type="submit" fullWidth mt={34}>
               Sign in
             </Button>
           </form>
@@ -93,7 +99,7 @@ const SignIn: NextPage = () => {
             component="a"
             leftSection={<GoogleIcon />}
             href={`${config.API_URL}/account/sign-in/google/auth`}
-            variant="outline"
+            // variant="outline"
           >
             Continue with Google
           </Button>
