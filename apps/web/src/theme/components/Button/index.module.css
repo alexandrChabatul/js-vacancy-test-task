@@ -1,3 +1,26 @@
 .label {
   font-weight: 500;
 }
+
+.root {
+  &:hover {
+    background-color: #5692EF;
+  }
+  &:active {
+    background-color: #235FBC;
+  }
+  &[data-variant='secondary'] {
+    border-color: #CFCFCF;
+    background-color: transparent;
+    color: #CFCFCF;
+
+    &:hover {
+      border-color: #5692EF;
+      color: #5692EF;
+    }
+    &:active {
+      border-color: #235FBC;
+      color: #235FBC;
+    }
+  }
+}

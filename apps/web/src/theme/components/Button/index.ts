@@ -10,5 +10,6 @@ export default Button.extend({
   },
   classNames: {
     label: classes.label,
+    root: classes.root,
   },
 });
