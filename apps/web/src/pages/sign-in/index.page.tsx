@@ -3,15 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Head from 'next/head';
 import { NextPage } from 'next';
-import {
-  TextInput,
-  PasswordInput,
-  Button,
-  Group,
-  Stack,
-  Title,
-  Alert,
-} from '@mantine/core';
+import { TextInput, PasswordInput, Button, Group, Stack, Title, Alert } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';
 
 import { accountApi } from 'resources/account';
@@ -42,9 +34,10 @@ const SignIn: NextPage = () => {
 
   const { mutate: signIn, isLoading: isSignInLoading } = accountApi.useSignIn<SignInParams>();
 
-  const onSubmit = (data: SignInParams) => signIn(data, {
-    onError: (e) => handleError(e, setError),
-  });
+  const onSubmit = (data: SignInParams) =>
+    signIn(data, {
+      onError: (e) => handleError(e, setError),
+    });
 
   return (
     <>
@@ -106,12 +99,7 @@ const SignIn: NextPage = () => {
 
           <Group fz={16} justify="center" gap={12}>
             Don’t have an account?
-            <Link
-              type="router"
-              href={RoutePath.SignUp}
-              underline={false}
-              inherit
-            >
+            <Link type="router" href={RoutePath.SignUp} underline={false} inherit>
               Sign up
             </Link>
           </Group>
