@@ -1,6 +1,4 @@
-.dropdown {
-  left: unset !important;
-  right: 30px !important;
-  border: 1px solid var(--mantine-color-gray-4);
-  box-shadow: unset !important;
+.iconButton {
+  display: flex;
+  align-items: end;
 }

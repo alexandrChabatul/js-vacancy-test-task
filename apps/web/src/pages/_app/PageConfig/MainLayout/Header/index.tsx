@@ -9,9 +9,9 @@ import { RoutePath } from 'routes';
 import { LogoImage } from 'public/images';
 
 import UserMenu from './components/UserMenu';
-import ShadowLoginBanner from './components/ShadowLoginBanner';
 
 import classes from './index.module.css';
+import Navbar from './components/Navbar';
 
 const Header: FC = () => {
   const { data: account } = accountApi.useGet();
@@ -19,19 +19,12 @@ const Header: FC = () => {
   if (!account) return null;
 
   return (
-    <LayoutHeader>
-      {account.isShadow && <ShadowLoginBanner email={account.email} />}
-      <Container
-        className={classes.header}
-        mih={72}
-        px={32}
-        py={0}
-        display="flex"
-        fluid
-      >
+    <LayoutHeader className={classes.headerWrapper}>
+      <Container className={classes.header} mih={72} px={32} pt={33} display="flex" fluid>
         <Link type="router" href={RoutePath.Home}>
           <LogoImage />
         </Link>
+        <Navbar />
         <UserMenu />
       </Container>
     </LayoutHeader>
