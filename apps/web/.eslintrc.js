@@ -6,7 +6,7 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: ['next', 'airbnb', 'airbnb-typescript'],
+  extends: ['next', 'airbnb', 'airbnb-typescript', 'prettier'],
   ignorePatterns: ['.eslintrc.js'],
   parserOptions: {
     project: './tsconfig.json',

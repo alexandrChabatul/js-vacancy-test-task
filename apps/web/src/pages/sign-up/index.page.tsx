@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 import { z } from 'zod';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -27,11 +28,12 @@ import { EMAIL_REGEX, PASSWORD_REGEX } from 'app-constants';
 
 const schema = z.object({
   email: z.string().regex(EMAIL_REGEX, 'Email format is incorrect.'),
-  password: z.string().regex(
-    PASSWORD_REGEX,
-    // eslint-disable-next-line @typescript-eslint/comma-dangle
-    'The password must contain 6 or more characters with at least one letter (a-z) and one number (0-9).'
-  ),
+  password: z
+    .string()
+    .regex(
+      PASSWORD_REGEX,
+      'The password must contain 6 or more characters with at least one letter (a-z) and one number (0-9).'
+    ),
 });
 
 type SignUpParams = z.infer<typeof schema>;
@@ -128,8 +130,7 @@ const SignUp: NextPage = () => {
 
           <Text size="md" c="gray.6">
             Please follow the instructions from the email to complete a sign up process. We sent an
-            email with a confirmation link to
-            <b>{email}</b>
+            email with a confirmation link to <b>{email}</b>
           </Text>
 
           {signupToken && (
