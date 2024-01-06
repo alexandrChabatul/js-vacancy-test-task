@@ -173,7 +173,7 @@ const SignUp: NextPage = () => {
             </Stack>
 
             <Button type="submit" loading={isSignUpLoading} fullWidth mt={34}>
-              Sign Up
+              Create Account
             </Button>
           </form>
         </Stack>
