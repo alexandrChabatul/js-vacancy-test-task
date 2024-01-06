@@ -12,8 +12,9 @@ const mainTheme = createTheme({
     md: '1.45',
   },
   colors: {
-    grey: [
+    'custom-grey': [
       '#FCFCFC',
+      '#F4F4F4',
       '#ECECEE',
       '#CFCFCF',
       '#A3A3A3',
@@ -22,7 +23,6 @@ const mainTheme = createTheme({
       '#767c91',
       '#656a7e',
       '#585e72',
-      '#4a5167',
     ],
     'custom-blue': [
       '#EAF1FD',

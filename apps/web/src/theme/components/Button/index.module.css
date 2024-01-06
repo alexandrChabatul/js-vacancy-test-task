@@ -12,9 +12,9 @@
     background-color: var(--mantine-color-custom-blue-6);
   }
   &[data-variant='secondary'] {
-    border-color: var(--mantine-color-grey-2);
+    border-color: var(--mantine-color-custom-grey-3);
     background-color: transparent;
-    color: var(--mantine-color-grey-4);
+    color: var(--mantine-color-custom-grey-5);
 
     &:hover {
       border-color: var(--mantine-color-custom-blue-4);
