@@ -3,27 +3,16 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Head from 'next/head';
 import { NextPage } from 'next';
-import {
-  TextInput,
-  PasswordInput,
-  Button,
-  Group,
-  Stack,
-  Title,
-  Alert,
-} from '@mantine/core';
+import { TextInput, PasswordInput, Button, Group, Stack, Title, Alert } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';
 
 import { accountApi } from 'resources/account';
 
-import config from 'config';
 import { handleError } from 'utils';
 import { RoutePath } from 'routes';
 import { Link } from 'components';
 
 import { EMAIL_REGEX } from 'app-constants';
-
-import { GoogleIcon } from 'public/icons';
 
 const schema = z.object({
   email: z.string().regex(EMAIL_REGEX, 'Email format is incorrect.'),
@@ -42,9 +31,10 @@ const SignIn: NextPage = () => {
 
   const { mutate: signIn, isLoading: isSignInLoading } = accountApi.useSignIn<SignInParams>();
 
-  const onSubmit = (data: SignInParams) => signIn(data, {
-    onError: (e) => handleError(e, setError),
-  });
+  const onSubmit = (data: SignInParams) =>
+    signIn(data, {
+      onError: (e) => handleError(e, setError),
+    });
 
   return (
     <>
@@ -76,42 +66,18 @@ const SignIn: NextPage = () => {
                   {errors.credentials.message}
                 </Alert>
               )}
-
-              <Link
-                href={RoutePath.ForgotPassword}
-                type="router"
-                underline={false}
-                size="md"
-                align="center"
-              >
-                Forgot password?
-              </Link>
             </Stack>
 
             <Button loading={isSignInLoading} type="submit" fullWidth mt={34}>
-              Sign in
+              Login
             </Button>
           </form>
         </Stack>
 
         <Stack gap={34}>
-          <Button
-            component="a"
-            leftSection={<GoogleIcon />}
-            href={`${config.API_URL}/account/sign-in/google/auth`}
-            // variant="outline"
-          >
-            Continue with Google
-          </Button>
-
           <Group fz={16} justify="center" gap={12}>
             Don’t have an account?
-            <Link
-              type="router"
-              href={RoutePath.SignUp}
-              underline={false}
-              inherit
-            >
+            <Link type="router" href={RoutePath.SignUp} underline={false} inherit>
               Sign up
             </Link>
           </Group>

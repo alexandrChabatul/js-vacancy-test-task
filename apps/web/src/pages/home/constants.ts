@@ -7,16 +7,6 @@ export const PER_PAGE = 5;
 
 export const columns: ColumnDef<User>[] = [
   {
-    accessorKey: 'firstName',
-    header: 'First Name',
-    cell: (info) => info.getValue(),
-  },
-  {
-    accessorKey: 'lastName',
-    header: 'Last Name',
-    cell: (info) => info.getValue(),
-  },
-  {
     accessorKey: 'email',
     header: 'Email',
     cell: (info) => info.getValue(),

@@ -29,13 +29,10 @@ async function validator(ctx: AppKoaContext<ValidatedData>, next: Next) {
 async function handler(ctx: AppKoaContext<ValidatedData>) {
   const { user } = ctx.validatedData;
 
-  await userService.updateOne(
-    { _id: user._id },
-    () => ({
-      isEmailVerified: true,
-      signupToken: null,
-    }),
-  );
+  await userService.updateOne({ _id: user._id }, () => ({
+    isEmailVerified: true,
+    signupToken: null,
+  }));
 
   await Promise.all([
     userService.updateLastRequest(user._id),
@@ -47,7 +44,7 @@ async function handler(ctx: AppKoaContext<ValidatedData>) {
     subject: 'Welcome to Ship Community!',
     template: Template.SIGN_UP_WELCOME,
     params: {
-      firstName: user.firstName,
+      email: user.email,
       href: `${config.WEB_URL}/sign-in`,
     },
   });
