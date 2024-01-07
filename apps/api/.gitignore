@@ -8,5 +8,6 @@ npm-debug.log
 .idea
 .vscode
 ./dist
+serviceAccount.json
 
 .env
