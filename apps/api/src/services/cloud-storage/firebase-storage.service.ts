@@ -3,7 +3,9 @@ import type { File } from '@koa/multer';
 import config from 'config';
 
 import * as helpers from './cloud-storage.helper';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { FirebaseApp, initializeApp } from 'firebase/app';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import {
   getDownloadURL,
   getStorage,

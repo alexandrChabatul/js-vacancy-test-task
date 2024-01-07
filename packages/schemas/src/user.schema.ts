@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import dbSchema from './db.schema';
+import { productSchema } from './product.schema';
 
 export const userSchema = dbSchema
   .extend({
@@ -21,5 +22,6 @@ export const userSchema = dbSchema
       .optional(),
 
     lastRequest: z.date().optional(),
+    products: z.array(productSchema),
   })
   .strict();
