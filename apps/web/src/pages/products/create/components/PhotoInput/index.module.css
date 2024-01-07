@@ -20,10 +20,6 @@
     color: var(--mantine-color-gray-5);
   }
 
-  &:hover .browseButton {
-    border: 1px dashed var(--mantine-color-gray-5);
-  }
-
   &:hover .innerAvatar {
     opacity: 1;
   }
@@ -35,10 +31,6 @@
   align-items: center;
   transition: all 200ms ease-in-out;
   cursor: pointer;
-}
-
-.error {
-  border: 1px dashed var(--mantine-color-red-5);
 }
 
 .addIcon {
@@ -67,6 +59,7 @@
 
 .errorMessage {
   margin-top: 4px;
+  margin-bottom: 0;
   font-size: 14px;
   line-height: 17px;
   color: var(--mantine-color-red-5);

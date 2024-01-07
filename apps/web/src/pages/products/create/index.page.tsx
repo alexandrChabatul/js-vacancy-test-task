@@ -4,19 +4,21 @@ import { Button, NumberInput, Stack, TextInput, Title } from '@mantine/core';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import PhotoInput from './components/PhotoInput';
 
 import classes from './index.module.css';
-import PhotoInput from './components/PhotoInput';
 
 const schema = z.object({
   title: z.string().min(1, 'Title is required').max(100),
-  price: z.number().min(1, 'Price is required').max(999999),
+  price: z
+    .union([z.number(), z.string()])
+    .pipe(z.coerce.number().gte(0.01, 'Price is required and should be positive number')),
   photoUrl: z.string({
     required_error: 'Photo is required',
   }),
 });
 
-type CreateProductParams = z.infer<typeof schema>;
+export type CreateProductParams = z.infer<typeof schema>;
 
 const CreateProduct: NextPage = () => {
   const {
@@ -27,6 +29,7 @@ const CreateProduct: NextPage = () => {
     formState: { errors },
   } = useForm<CreateProductParams>({
     resolver: zodResolver(schema),
+    reValidateMode: 'onBlur',
   });
 
   const setPhotoUrl = (url: string) => {
@@ -34,6 +37,7 @@ const CreateProduct: NextPage = () => {
   };
 
   const onSubmit: SubmitHandler<CreateProductParams> = (data) => console.log(data);
+
   return (
     <>
       <Head>
@@ -44,10 +48,9 @@ const CreateProduct: NextPage = () => {
           Create new product
         </Title>
         <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
-          {' '}
           <PhotoInput
             setPhoto={setPhotoUrl}
-            error={!getValues().photoUrl && errors.photoUrl?.message}
+            error={getValues().photoUrl ? undefined : errors.photoUrl?.message}
           />
           <TextInput
             {...register('title')}

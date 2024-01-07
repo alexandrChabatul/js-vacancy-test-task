@@ -1,22 +1,21 @@
-import { Box, Button, Center, FileButton, Group, Loader, Stack, Image } from '@mantine/core';
-import { FC, memo, useEffect, useState } from 'react';
+import { Button, Center, FileButton, Group, Loader, Image, Box } from '@mantine/core';
+import { FC, memo, useState } from 'react';
 import { PhotoCover } from 'public/icons';
 import { Dropzone, FileWithPath } from '@mantine/dropzone';
 import { IconPencil } from '@tabler/icons-react';
-import classNames from 'classnames';
 import { productApi } from 'resources/product';
 import { handleError } from 'utils';
 import classes from './index.module.css';
 
 interface PhotoInputProps {
-  error: string | false | undefined;
+  error: string | undefined;
   setPhoto: (url: string) => void;
 }
 
 const ONE_MB_IN_BYTES = 1048576;
 
 const PhotoInput: FC<PhotoInputProps> = ({ error, setPhoto }) => {
-  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+  const [url, setUrl] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const { mutate: uploadProductPhoto, isLoading } = productApi.useUploadPhoto<FormData>();
@@ -36,6 +35,7 @@ const PhotoInput: FC<PhotoInputProps> = ({ error, setPhoto }) => {
   };
 
   const handlePhotoUpload = async ([imageFile]: FileWithPath[]) => {
+    if (!imageFile) return;
     setErrorMessage(null);
 
     if (isFileFormatCorrect(imageFile) && isFileSizeCorrect(imageFile) && imageFile) {
@@ -43,22 +43,18 @@ const PhotoInput: FC<PhotoInputProps> = ({ error, setPhoto }) => {
       body.append('file', imageFile, imageFile.name);
 
       await uploadProductPhoto(body, {
-        onSuccess: ({ url }) => {
-          if (!url) return;
-          setPhoto(url);
-          setPhotoUrl(url);
+        onSuccess: (res) => {
+          if (!res.url) return;
+          setPhoto(res.url);
+          setUrl(res.url);
         },
         onError: (err) => handleError(err),
       });
     }
   };
 
-  useEffect(() => {
-    console.log(photoUrl);
-  }, [photoUrl]);
-
   return (
-    <Stack>
+    <Box>
       <Group>
         <Dropzone
           name="avatarUrl"
@@ -70,23 +66,19 @@ const PhotoInput: FC<PhotoInputProps> = ({ error, setPhoto }) => {
           w={180}
           h={180}
         >
-          <label
-            className={classNames(classes.browseButton, {
-              [classes.error]: errorMessage,
-            })}
-          >
-            {photoUrl ? (
+          <label className={classes.browseButton}>
+            {url ? (
               <Box className={classes.productImageBox}>
-                <Image width={180} height={180} alt="Product image" src={photoUrl} />
+                <Image width={180} height={180} alt="Product image" src={url} radius="lg" />
                 <Center w="100%" h="100%" className={classes.productImagePencil}>
                   <IconPencil />
                 </Center>
               </Box>
             ) : (
-              <div className={classes.coverWrapper}>
+              <Box className={classes.coverWrapper}>
                 <PhotoCover />
                 {isLoading && <Loader size={30} className={classes.loader} />}
-              </div>
+              </Box>
             )}
           </label>
         </Dropzone>
@@ -98,8 +90,10 @@ const PhotoInput: FC<PhotoInputProps> = ({ error, setPhoto }) => {
           )}
         </FileButton>
       </Group>
-      {error && <p>{error}</p>}
-    </Stack>
+      {(!!errorMessage || error) && (
+        <p className={classes.errorMessage}>{errorMessage || (!url && error)}</p>
+      )}
+    </Box>
   );
 };
 
