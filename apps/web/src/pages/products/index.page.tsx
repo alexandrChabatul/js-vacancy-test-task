@@ -8,8 +8,9 @@ import { RoutePath } from '../../routes';
 import classes from './index.module.css';
 
 const Products: NextPage = () => {
-  const products = [1];
-  console.log(products);
+  const a = 123;
+  console.log(a);
+
   return (
     <>
       <Head>
