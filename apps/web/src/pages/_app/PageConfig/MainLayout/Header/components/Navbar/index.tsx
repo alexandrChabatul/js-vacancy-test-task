@@ -11,8 +11,12 @@ import classes from './index.module.css';
 const Navbar: FC = () => {
   const router = useRouter();
   const links = [
-    { link: RoutePath.Home, label: 'Marketplace' },
-    { link: RoutePath.Products, label: 'Your Products' },
+    { link: RoutePath.Home, label: 'Marketplace', regex: new RegExp(`^${RoutePath.Home}$`) },
+    {
+      link: RoutePath.Products,
+      label: 'Your Products',
+      regex: new RegExp(`^${RoutePath.Products}`),
+    },
   ];
 
   const { data: account } = accountApi.useGet();
@@ -25,7 +29,7 @@ const Navbar: FC = () => {
         <Link type="router" key={link.label} href={link.link} style={{ textDecoration: 'none' }}>
           <span
             className={classNames(classes.link, {
-              [classes.linkActive]: router.pathname === link.link,
+              [classes.linkActive]: link.regex.test(router.pathname),
             })}
           >
             {link.label}
