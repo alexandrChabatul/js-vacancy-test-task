@@ -1,4 +1,4 @@
-import { Stack } from '@mantine/core';
+import { Stack, Title } from '@mantine/core';
 import { NextPage } from 'next';
 import Head from 'next/head';
 
@@ -11,7 +11,9 @@ const CreateProduct: NextPage = () => {
         <title>Create Product</title>
       </Head>
       <Stack>
-        <p>Create Product</p>
+        <Title order={1} fz="xl">
+          Create new product
+        </Title>
       </Stack>
     </>
   );
