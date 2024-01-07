@@ -1,5 +1,3 @@
-import * as accountApi from './account.api';
+import * as productApi from './product.api';
 
-export {
-  accountApi,
-};
+export { productApi };
