@@ -1,24 +1,20 @@
-import { Button, Center, FileButton, Group, Loader, Image, Box } from '@mantine/core';
+import { Button, Center, FileButton, Group, Image, Box } from '@mantine/core';
 import { FC, memo, useState } from 'react';
 import { PhotoCover } from 'public/icons';
 import { Dropzone, FileWithPath } from '@mantine/dropzone';
 import { IconPencil } from '@tabler/icons-react';
-import { productApi } from 'resources/product';
-import { handleError } from 'utils';
 import classes from './index.module.css';
 
 interface PhotoInputProps {
   error: string | undefined;
-  setPhoto: (url: string) => void;
+  setPhoto: (file: File) => void;
 }
 
 const ONE_MB_IN_BYTES = 1048576;
 
 const PhotoInput: FC<PhotoInputProps> = ({ error, setPhoto }) => {
-  const [url, setUrl] = useState<string | null>(null);
+  const [image, setImage] = useState<File | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-  const { mutate: uploadProductPhoto, isLoading } = productApi.useUploadPhoto<FormData>();
 
   const isFileSizeCorrect = (file: any) => {
     if (file.size / ONE_MB_IN_BYTES > 2) {
@@ -39,17 +35,8 @@ const PhotoInput: FC<PhotoInputProps> = ({ error, setPhoto }) => {
     setErrorMessage(null);
 
     if (isFileFormatCorrect(imageFile) && isFileSizeCorrect(imageFile) && imageFile) {
-      const body = new FormData();
-      body.append('file', imageFile, imageFile.name);
-
-      await uploadProductPhoto(body, {
-        onSuccess: (res) => {
-          if (!res.url) return;
-          setPhoto(res.url);
-          setUrl(res.url);
-        },
-        onError: (err) => handleError(err),
-      });
+      setPhoto(imageFile);
+      setImage(imageFile);
     }
   };
 
@@ -67,9 +54,15 @@ const PhotoInput: FC<PhotoInputProps> = ({ error, setPhoto }) => {
           h={180}
         >
           <label className={classes.browseButton}>
-            {url ? (
+            {image ? (
               <Box className={classes.productImageBox}>
-                <Image width={180} height={180} alt="Product image" src={url} radius="lg" />
+                <Image
+                  width={180}
+                  height={180}
+                  alt="Product image"
+                  src={URL.createObjectURL(image)}
+                  radius="lg"
+                />
                 <Center w="100%" h="100%" className={classes.productImagePencil}>
                   <IconPencil />
                 </Center>
@@ -77,7 +70,6 @@ const PhotoInput: FC<PhotoInputProps> = ({ error, setPhoto }) => {
             ) : (
               <Box className={classes.coverWrapper}>
                 <PhotoCover />
-                {isLoading && <Loader size={30} className={classes.loader} />}
               </Box>
             )}
           </label>
@@ -91,7 +83,7 @@ const PhotoInput: FC<PhotoInputProps> = ({ error, setPhoto }) => {
         </FileButton>
       </Group>
       {(!!errorMessage || error) && (
-        <p className={classes.errorMessage}>{errorMessage || (!url && error)}</p>
+        <p className={classes.errorMessage}>{errorMessage || (!image && error)}</p>
       )}
     </Box>
   );
