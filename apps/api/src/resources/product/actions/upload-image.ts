@@ -18,7 +18,6 @@ async function validator(ctx: AppKoaContext, next: Next) {
 
 async function handler(ctx: AppKoaContext) {
   const { file } = ctx.request;
-  console.log(file);
 
   const url = await firebaseStorageService.uploadFile(file.filename, file);
 
