@@ -4,9 +4,15 @@ import { Button, NumberInput, Stack, TextInput, Title } from '@mantine/core';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { showNotification } from '@mantine/notifications';
+import { useCreate } from 'resources/product/product.api';
+import queryClient from 'query-client';
+import { handleError } from 'utils';
+import { useRouter } from 'next/router';
 import PhotoInput from './components/PhotoInput';
 
 import classes from './index.module.css';
+import { RoutePath } from '../../../routes';
 
 const schema = z.object({
   title: z.string().min(1, 'Title is required').max(100),
@@ -26,17 +32,34 @@ const CreateProduct: NextPage = () => {
     handleSubmit,
     setValue,
     getValues,
+    setError,
     formState: { errors },
   } = useForm<CreateProductParams>({
     resolver: zodResolver(schema),
     reValidateMode: 'onBlur',
   });
 
+  const { mutate: createProduct, isLoading } = useCreate<CreateProductParams>();
+  const router = useRouter();
+
   const setPhotoUrl = (url: string) => {
     setValue('photoUrl', url);
   };
 
-  const onSubmit: SubmitHandler<CreateProductParams> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<CreateProductParams> = (data) => {
+    createProduct(data, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['products'] });
+        showNotification({
+          title: 'Success',
+          message: 'The product was successfully created',
+          color: 'green',
+        });
+        router.push(RoutePath.Products);
+      },
+      onError: (e) => handleError(e, setError),
+    });
+  };
 
   return (
     <>
@@ -68,7 +91,7 @@ const CreateProduct: NextPage = () => {
             error={errors.price?.message}
             hideControls
           />
-          <Button type="submit" loading={false} className={classes.submitButton}>
+          <Button type="submit" loading={isLoading} className={classes.submitButton}>
             Upload Product
           </Button>
         </form>
