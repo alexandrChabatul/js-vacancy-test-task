@@ -7,7 +7,7 @@ import create from './actions/create';
 
 const publicRoutes = routeUtil.getRoutes([]);
 
-const privateRoutes = routeUtil.getRoutes([list, uploadImage, create]);
+const privateRoutes = routeUtil.getRoutes([list, uploadImage, create, remove]);
 
 const adminRoutes = routeUtil.getRoutes([list, remove, uploadImage]);
 

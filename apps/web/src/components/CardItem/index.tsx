@@ -1,10 +1,14 @@
 import { FC, memo, useState } from 'react';
 import { ActionIcon, Badge, Button, Card, Group, Image, Stack, Text } from '@mantine/core';
+import { showNotification } from '@mantine/notifications';
 import { IconTrash } from '@tabler/icons-react';
 import { Product } from 'types';
+import { productApi } from 'resources/product';
+import queryClient from 'query-client';
+import { handleError } from 'utils';
+import ConfirmDialog from '../ConfirmDialog';
 
 import classes from './index.module.css';
-import ConfirmDialog from '../ConfirmDialog';
 
 interface CardProps {
   product: Product;
@@ -16,7 +20,21 @@ interface CardProps {
 
 const CardItem: FC<CardProps> = ({ product, maw, h, hImage, type }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const removeProduct = () => {};
+  const { mutate: removeProduct } = productApi.useRemove();
+  const handleRemoveProduct = () => {
+    removeProduct(product._id, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['account'] });
+        showNotification({
+          title: 'Success',
+          message: 'The product was removed.',
+          color: 'gray',
+        });
+        setDialogOpen(false);
+      },
+      onError: (e) => handleError(e),
+    });
+  };
   const handleAddToCart = () => {};
   return (
     <>
@@ -63,7 +81,7 @@ const CardItem: FC<CardProps> = ({ product, maw, h, hImage, type }) => {
       {type === 'account' && (
         <ConfirmDialog
           isOpen={dialogOpen}
-          onAccept={removeProduct}
+          onAccept={handleRemoveProduct}
           onClose={() => setDialogOpen(false)}
           title="Are you sure you want to remove the item?"
           acceptText="Delete"

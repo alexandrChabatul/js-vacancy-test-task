@@ -1,6 +1,8 @@
 import { AppKoaContext, AppRouter, Next } from 'types';
 
-import { userService } from 'resources/user';
+import { productService } from 'resources/product';
+import { firebaseStorageService } from '../../../services';
+import { userService } from '../../user';
 
 type ValidatedData = never;
 type Request = {
@@ -10,16 +12,24 @@ type Request = {
 };
 
 async function validator(ctx: AppKoaContext<ValidatedData, Request>, next: Next) {
-  const isUserExists = await userService.exists({ _id: ctx.request.params.id });
+  const isProductExists = await productService.exists({ _id: ctx.request.params.id });
 
-  ctx.assertError(isUserExists, 'User not found');
+  ctx.assertError(isProductExists, 'Product not found');
 
   await next();
 }
 
 async function handler(ctx: AppKoaContext<ValidatedData, Request>) {
-  await userService.deleteSoft({ _id: ctx.request.params.id });
+  const product = await productService.findOne({ _id: ctx.request.params.id });
+  await Promise.all([
+    firebaseStorageService.deleteFile(product!.photoUrl),
+    productService.deleteSoft({ _id: ctx.request.params.id }),
+    userService.updateOne({ _id: ctx.state.user._id }, (prev) => ({
+      products: [...prev.products.filter((p) => p._id !== ctx.request.params.id)],
+    })),
+  ]);
 
+  ctx.status = 204;
   ctx.body = {};
 }
 

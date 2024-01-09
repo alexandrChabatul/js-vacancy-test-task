@@ -6,7 +6,7 @@ import { userService } from 'resources/user';
 
 import { validateMiddleware } from 'middlewares';
 import { analyticsService } from 'services';
-import productService from '../product.service';
+import { productService } from 'resources/product';
 
 const schema = z.object({
   title: z.string(),

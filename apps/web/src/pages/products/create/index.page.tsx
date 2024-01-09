@@ -38,11 +38,13 @@ const CreateProduct: NextPage = () => {
     reValidateMode: 'onBlur',
   });
 
+  const router = useRouter();
+
   const { mutate: createProduct, isLoading: productLoading } =
     productApi.useCreate<Partial<Product>>();
   const { mutate: uploadProductPhoto, isLoading: photoLoading } =
     productApi.useUploadPhoto<FormData>();
-  const router = useRouter();
+  const { mutate: removeProductPhoto } = productApi.useRemovePhoto<{ url: string }>();
 
   const create = (data: Partial<Product>) =>
     createProduct(data, {
@@ -55,7 +57,10 @@ const CreateProduct: NextPage = () => {
         });
         router.push(RoutePath.Products);
       },
-      onError: (e) => handleError(e, setError),
+      onError: (e) => {
+        handleError(e, setError);
+        if (data.photoUrl) removeProductPhoto({ url: data.photoUrl });
+      },
     });
 
   const onSubmit: SubmitHandler<CreateProductParams> = (data) => {

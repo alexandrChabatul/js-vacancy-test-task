@@ -2,8 +2,6 @@ import multer from '@koa/multer';
 
 import { Next, AppKoaContext, AppRouter } from 'types';
 
-import { userService } from 'resources/user';
-
 import { firebaseStorageService } from 'services';
 
 const upload = multer();
