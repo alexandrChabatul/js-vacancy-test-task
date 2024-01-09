@@ -1,13 +1,13 @@
 import { Database } from '@paralect/node-mongo';
 
-import { User } from 'types';
-import { userSchema } from 'schemas';
+import { Product } from 'types';
+import { productSchema } from 'schemas';
 import { DATABASE_DOCUMENTS } from 'app-constants';
 
 const database = new Database(process.env.MONGO_URL as string);
 
-const userService = database.createService<User>(DATABASE_DOCUMENTS.USERS, {
-  schemaValidator: (obj) => userSchema.parseAsync(obj),
+const productsService = database.createService<Product>(DATABASE_DOCUMENTS.PRODUCTS, {
+  schemaValidator: (obj) => productSchema.parseAsync(obj),
 });
 
 describe('User service', () => {
@@ -16,21 +16,22 @@ describe('User service', () => {
   });
 
   beforeEach(async () => {
-    await userService.deleteMany({});
+    await productsService.deleteMany({});
   });
 
-  it('should create user', async () => {
-    const mockUser = {
+  it('should create product', async () => {
+    const mockProduct = {
       _id: '123asdqwer',
-      email: 'smith@example.com',
-      isEmailVerified: false,
+      title: 'Test product',
+      price: 123.23,
+      photoUrl: 'https://test.url',
     };
 
-    await userService.insertOne(mockUser);
+    await productsService.insertOne(mockProduct);
 
-    const insertedUser = await userService.findOne({ _id: mockUser._id });
+    const insertedProduct = await productsService.findOne({ _id: mockProduct._id });
 
-    expect(insertedUser).not.toBeNull();
+    expect(insertedProduct).not.toBeNull();
   });
 
   afterAll(async () => {

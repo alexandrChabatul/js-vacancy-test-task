@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { ProductStatus } from 'enums';
 import dbSchema from './db.schema';
 
 export const productSchema = dbSchema
@@ -7,6 +8,7 @@ export const productSchema = dbSchema
     photoUrl: z.string(),
     title: z.string(),
     price: z.number(),
+    status: z.nativeEnum(ProductStatus),
     userId: z.string(),
   })
   .strict();

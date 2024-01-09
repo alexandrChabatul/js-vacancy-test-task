@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { AppKoaContext, AppRouter, Product } from 'types';
+import { AppKoaContext, AppRouter, Product, ProductStatus } from 'types';
 
 import { userService } from 'resources/user';
 
@@ -27,6 +27,7 @@ async function handler(ctx: AppKoaContext<ValidatedData>) {
     price,
     photoUrl,
     userId: user._id,
+    status: ProductStatus.SALE,
   });
 
   await userService.updateOne({ _id: user._id }, (prev) => ({
