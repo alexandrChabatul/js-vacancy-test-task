@@ -3,18 +3,19 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import { IconPlus } from '@tabler/icons-react';
 import Link from 'next/link';
+import { accountApi } from 'resources/account';
 import { RoutePath } from '../../routes';
 
 import classes from './index.module.css';
+import CardItem from '../../components/CardItem';
 
 const Products: NextPage = () => {
-  const a = 123;
-  console.log(a);
+  const { data: user } = accountApi.useGet();
 
   return (
     <>
       <Head>
-        <title>Home</title>
+        <title>Products</title>
       </Head>
       <Stack>
         <Title order={1} fz="xl">
@@ -37,6 +38,9 @@ const Products: NextPage = () => {
               New Product
             </Text>
           </Paper>
+          {user?.products.map((product) => (
+            <CardItem product={product} type="account" maw={271} h={266} hImage={174} />
+          ))}
         </Group>
       </Stack>
     </>
