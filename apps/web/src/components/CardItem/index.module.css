@@ -1,0 +1,22 @@
+.userActions {
+  top: 0;
+  right: 0;
+  justify-content: space-between;
+  align-items: end;
+  height: 100%;
+
+  .statusSell {
+    background-color: #fef4e6;
+    color: #f79009;
+  }
+
+  .statusSold {
+    background-color: #e8f7f0;
+    color: #17b26a;
+  }
+}
+
+.price {
+  align-items: center;
+  justify-content: space-between;
+}

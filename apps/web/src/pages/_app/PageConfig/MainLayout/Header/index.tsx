@@ -20,8 +20,8 @@ const Header: FC = () => {
 
   return (
     <LayoutHeader className={classes.headerWrapper}>
-      <Container className={classes.header} mih={72} px={32} pt={33} display="flex" fluid>
-        <Link type="router" href={RoutePath.Home}>
+      <Container className={classes.header} mih={72} px={48} pt={33} display="flex" fluid>
+        <Link href={RoutePath.Home}>
           <LogoImage />
         </Link>
         <Navbar />

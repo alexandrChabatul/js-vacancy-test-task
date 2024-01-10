@@ -13,11 +13,12 @@ import config from 'config';
 
 const schema = z.object({
   email: z.string().regex(EMAIL_REGEX, 'Email format is incorrect.'),
-  password: z.string().regex(
-    PASSWORD_REGEX,
-    // eslint-disable-next-line @typescript-eslint/comma-dangle
-    'The password must contain 8 or more characters with at least one letter (a-z), one capitalize letter (A-Z) and one number (0-9).'
-  ),
+  password: z
+    .string()
+    .regex(
+      PASSWORD_REGEX,
+      'The password must contain 8 or more characters with at least one letter (a-z), one capitalize letter (A-Z) and one number (0-9).'
+    ),
 });
 
 interface ValidatedData extends z.infer<typeof schema> {
@@ -49,6 +50,7 @@ async function handler(ctx: AppKoaContext<ValidatedData>) {
     passwordHash: hash.toString(),
     isEmailVerified: false,
     signupToken,
+    products: [],
   });
   console.log(signupToken);
 

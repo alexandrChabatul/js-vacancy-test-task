@@ -30,4 +30,7 @@ module.exports = {
     ignoreDuringBuilds: true,
   },
   transpilePackages: ['types', 'schemas', 'app-constants'],
+  images: {
+    domains: ['firebasestorage.googleapis.com'],
+  },
 };

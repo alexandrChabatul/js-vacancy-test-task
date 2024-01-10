@@ -7,6 +7,14 @@
 }
 
 .main {
-  padding: 32px;
+  padding-bottom: 32px;
   padding-top: 106px;
+  display: flex;
+  justify-content: center;
+}
+
+.mainWrapper {
+  flex-grow: 1;
+  max-width: 1440px;
+  padding: 0 48px;
 }

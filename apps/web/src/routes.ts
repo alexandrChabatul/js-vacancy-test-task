@@ -23,6 +23,7 @@ export enum RoutePath {
 
   // Market
   Products = '/products',
+  ProductsCreate = '/products/create',
 
   NotFound = '/404',
 }
@@ -41,6 +42,10 @@ export const routesConfiguration: RoutesConfiguration = {
     layout: LayoutType.MAIN,
   },
   [RoutePath.Products]: {
+    scope: ScopeType.PRIVATE,
+    layout: LayoutType.MAIN,
+  },
+  [RoutePath.ProductsCreate]: {
     scope: ScopeType.PRIVATE,
     layout: LayoutType.MAIN,
   },

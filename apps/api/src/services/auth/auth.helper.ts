@@ -9,7 +9,10 @@ import config from 'config';
 export const setTokenCookies = ({
   ctx,
   accessToken,
-}: { ctx: AppKoaContext, accessToken: string }) => {
+}: {
+  ctx: AppKoaContext;
+  accessToken: string;
+}) => {
   const parsedUrl = url.parse(config.WEB_URL);
 
   if (!parsedUrl.hostname) {
