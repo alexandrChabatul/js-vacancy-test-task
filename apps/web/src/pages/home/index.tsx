@@ -9,24 +9,25 @@ import {
   Stack,
   Skeleton,
   Text,
-  Container,
   UnstyledButton,
   Flex,
+  Paper,
+  CloseIcon,
+  NumberInput,
+  Pill,
+  Container,
+  Pagination,
 } from '@mantine/core';
 import { useDebouncedValue, useInputState } from '@mantine/hooks';
-import { IconSearch, IconX, IconSelector } from '@tabler/icons-react';
-import { RowSelectionState, SortingState } from '@tanstack/react-table';
-import { DatePickerInput, DatesRangeValue } from '@mantine/dates';
+import { IconSearch, IconX, IconChevronDown, IconArrowsDownUp } from '@tabler/icons-react';
 
-import { userApi } from 'resources/user';
-
-import { Table } from 'components';
-
-import { PER_PAGE, columns, selectOptions } from './constants';
+import { PER_PAGE, selectOptions } from './constants';
 
 import classes from './index.module.css';
+import { productApi } from '../../resources/product';
+import CardItem from '../../components/CardItem';
 
-interface UsersListParams {
+interface ProductsListParams {
   page?: number;
   perPage?: number;
   searchValue?: string;
@@ -34,23 +35,24 @@ interface UsersListParams {
     createdOn: 'asc' | 'desc';
   };
   filter?: {
-    createdOn?: {
-      sinceDate: Date | null;
-      dueDate: Date | null;
+    price?: {
+      from: number | null;
+      to: number | null;
     };
   };
 }
 
 const Home: NextPage = () => {
   const [search, setSearch] = useInputState('');
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
-  const [sorting, setSorting] = useState<SortingState>([]);
   const [sortBy, setSortBy] = useState(selectOptions[0].value);
-  const [filterDate, setFilterDate] = useState<DatesRangeValue>();
+  const [fromPrice, setFromPrice] = useState<number>();
+  const [toPrice, setToPrice] = useState<number>();
 
-  const [params, setParams] = useState<UsersListParams>({});
+  const [params, setParams] = useState<ProductsListParams>({});
 
   const [debouncedSearch] = useDebouncedValue(search, 500);
+
+  const pills = ['100$ - 200$'];
 
   const handleSort = useCallback((value: string) => {
     setSortBy(value);
@@ -60,80 +62,97 @@ const Home: NextPage = () => {
     }));
   }, []);
 
-  const handleFilter = useCallback(([sinceDate, dueDate]: DatesRangeValue) => {
-    setFilterDate([sinceDate, dueDate]);
-
-    if (!sinceDate) {
-      setParams((prev) => ({
-        ...prev,
-        filter: {},
-      }));
-    }
-
-    if (dueDate) {
-      setParams((prev) => ({
-        ...prev,
-        filter: { createdOn: { sinceDate, dueDate } },
-      }));
-    }
-  }, []);
-
   useLayoutEffect(() => {
     setParams((prev) => ({ ...prev, page: 1, searchValue: debouncedSearch, perPage: PER_PAGE }));
   }, [debouncedSearch]);
 
-  const { data, isLoading: isListLoading } = userApi.useList(params);
+  const { data, isLoading: isListLoading } = productApi.useList(params);
+
+  const handleResetAll = () => {
+    setToPrice(1);
+    setFromPrice(1);
+  };
 
   return (
     <>
       <Head>
-        <title>Home</title>
+        <title>Shopy</title>
       </Head>
-      <Stack gap="lg">
-        <Title order={2}>Users</Title>
-
-        <Group wrap="nowrap" justify="space-between">
-          <Group wrap="nowrap">
+      <Group gap="lg" align="start" wrap="nowrap">
+        <Paper p="lg" maw="24%">
+          <Group>
+            <Title order={5}>Filters</Title>
+            <Group onClick={handleResetAll}>
+              <Text size="sm">Reset All</Text>
+              <CloseIcon size="16" />
+            </Group>
+          </Group>
+          <Group>
+            <NumberInput
+              leftSection="From:"
+              placeholder=""
+              hideControls
+              min={0}
+              value={fromPrice}
+              decimalScale={2}
+              fixedDecimalScale
+              suffix="$"
+              onChange={(e) => console.log(e)}
+            />
+            <NumberInput
+              leftSection="To:"
+              placeholder=""
+              hideControls
+              min={fromPrice}
+              value={toPrice}
+              decimalScale={2}
+              fixedDecimalScale
+              suffix="$"
+              onChange={(e) => console.log(e)}
+            />
+          </Group>
+        </Paper>
+        <Stack className={classes.searchAndProducts}>
+          <Stack>
             <Skeleton
               className={classes.inputSkeleton}
               height={42}
               radius="sm"
               visible={isListLoading}
-              width="auto"
+              width="100%"
             >
               <TextInput
-                w={350}
+                w="100%"
                 size="md"
                 value={search}
                 onChange={setSearch}
-                placeholder="Search by name or email"
+                placeholder="Type to search"
                 leftSection={<IconSearch size={16} />}
-                rightSection={search ? (
-                  <UnstyledButton
-                    component={Flex}
-                    display="flex"
-                    align="center"
-                    onClick={() => setSearch('')}
-                  >
-                    <IconX color="gray" />
-                  </UnstyledButton>
-                ) : null}
+                rightSection={
+                  search ? (
+                    <UnstyledButton
+                      component={Flex}
+                      display="flex"
+                      align="center"
+                      onClick={() => setSearch('')}
+                    >
+                      <IconX color="gray" />
+                    </UnstyledButton>
+                  ) : null
+                }
               />
             </Skeleton>
-
-            <Skeleton
-              width="auto"
-              height={42}
-              radius="sm"
-              visible={isListLoading}
-            >
+            <Group w="100%" justify="space-between">
+              <Text>12 results</Text>
               <Select
                 w={200}
+                variant="unstyled"
                 size="md"
                 data={selectOptions}
                 value={sortBy}
                 onChange={handleSort}
-                rightSection={<IconSelector size={16} />}
+                rightSection={<IconChevronDown size={16} />}
+                leftSection={<IconArrowsDownUp />}
                 comboboxProps={{
                   withinPortal: false,
                   transitionProps: {
@@ -143,59 +162,39 @@ const Home: NextPage = () => {
                   },
                 }}
               />
-            </Skeleton>
+            </Group>
+            <Group>
+              {pills.map((text) => (
+                <Pill key={`pill-${text}`} withRemoveButton>
+                  {text}
+                </Pill>
+              ))}
+            </Group>
+          </Stack>
+          {isListLoading && (
+            <>
+              {[1, 2, 3, 4, 5, 6].map((item) => (
+                <Skeleton key={`sklton-${String(item)}`} height={50} radius="sm" mb="sm" />
+              ))}
+            </>
+          )}
 
-            <Skeleton
-              className={classes.datePickerSkeleton}
-              height={42}
-              radius="sm"
-              visible={isListLoading}
-              width="auto"
-            >
-              <DatePickerInput
-                type="range"
-                size="md"
-                placeholder="Pick date"
-                value={filterDate}
-                onChange={handleFilter}
-              />
-            </Skeleton>
-          </Group>
-        </Group>
-
-        {isListLoading && (
-          <>
-            {[1, 2, 3].map((item) => (
-              <Skeleton
-                key={`sklton-${String(item)}`}
-                height={50}
-                radius="sm"
-                mb="sm"
-              />
-            ))}
-          </>
-        )}
-
-        {data?.items.length ? (
-          <Table
-            columns={columns}
-            data={data.items}
-            dataCount={data.count}
-            rowSelection={rowSelection}
-            setRowSelection={setRowSelection}
-            sorting={sorting}
-            onSortingChange={setSorting}
-            onPageChange={setParams}
-            perPage={PER_PAGE}
-          />
-        ) : (
-          <Container p={75}>
-            <Text size="xl" c="gray">
-              No results found, try to adjust your search.
-            </Text>
-          </Container>
-        )}
-      </Stack>
+          {data?.items.length ? (
+            <Group wrap="wrap">
+              {data.items.map((product) => (
+                <CardItem product={product} type="store" maw={320} h={374} hImage={218} />
+              ))}
+            </Group>
+          ) : (
+            <Container p={75}>
+              <Text size="xl" c="gray">
+                No results found, try to adjust your search.
+              </Text>
+            </Container>
+          )}
+        </Stack>
+      </Group>
+      <Pagination total={data?.totalPages || 0} />
     </>
   );
 };
