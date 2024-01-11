@@ -71,12 +71,17 @@ const CardItem: FC<CardProps> = ({ product, maw, h, hImage, type }) => {
           <Text size="sm" c="var(--mantine-color-custom-grey-4)" truncate>
             Price:
           </Text>
-          <Text fw="bold" size="xl" lh={1.3} truncate>
+          <Text fw="bold" size="xl" lh={1.3} maw="80%" truncate>
             {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
               product.price
             )}
           </Text>
         </Group>
+        {type === 'store' && (
+          <Button fullWidth mt="md" radius="md" size="md" onClick={handleAddToCart}>
+            Add to Cart
+          </Button>
+        )}
       </Card>
       {type === 'account' && (
         <ConfirmDialog
@@ -87,11 +92,6 @@ const CardItem: FC<CardProps> = ({ product, maw, h, hImage, type }) => {
           acceptText="Delete"
           cancelText="Cancel"
         />
-      )}
-      {type === 'store' && (
-        <Button fullWidth mt="md" radius="md" size="md" onClick={handleAddToCart}>
-          Add to Cart
-        </Button>
       )}
     </>
   );
