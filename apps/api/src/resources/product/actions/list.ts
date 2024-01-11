@@ -2,13 +2,12 @@ import { z } from 'zod';
 
 import { AppKoaContext, AppRouter } from 'types';
 
-import { userService } from 'resources/user';
-
 import { validateMiddleware } from 'middlewares';
+import { productService } from '..';
 
 const schema = z.object({
   page: z.string().transform(Number).default('1'),
-  perPage: z.string().transform(Number).default('10'),
+  perPage: z.string().transform(Number).default('6'),
   sort: z
     .object({
       createdOn: z.enum(['asc', 'desc']),
@@ -16,10 +15,10 @@ const schema = z.object({
     .default({ createdOn: 'desc' }),
   filter: z
     .object({
-      createdOn: z
+      price: z
         .object({
-          sinceDate: z.string(),
-          dueDate: z.string(),
+          from: z.number(),
+          to: z.number(),
         })
         .nullable()
         .default(null),
@@ -37,17 +36,17 @@ async function handler(ctx: AppKoaContext<ValidatedData>) {
   const validatedSearch = searchValue.split('\\').join('\\\\').split('.').join('\\.');
   const regExp = new RegExp(validatedSearch, 'gi');
 
-  const users = await userService.find(
+  const products = await productService.find(
     {
       $and: [
         {
-          $or: [{ email: { $regex: regExp } }, { createdOn: {} }],
+          $or: [{ name: { $regex: regExp } }, { createdOn: {} }],
         },
-        filter?.createdOn
+        filter?.price
           ? {
-              createdOn: {
-                $gte: new Date(filter.createdOn.sinceDate as string),
-                $lt: new Date(filter.createdOn.dueDate as string),
+              price: {
+                $gte: Number(filter.price.from),
+                $lt: Number(filter.price.to),
               },
             }
           : {},
@@ -58,9 +57,9 @@ async function handler(ctx: AppKoaContext<ValidatedData>) {
   );
 
   ctx.body = {
-    items: users.results,
-    totalPages: users.pagesCount,
-    count: users.count,
+    items: products.results,
+    totalPages: products.pagesCount,
+    count: products.count,
   };
 }
 
