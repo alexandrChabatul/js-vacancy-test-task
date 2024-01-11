@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { AppKoaContext, AppRouter } from 'types';
+import { AppKoaContext, AppRouter, ProductStatus } from 'types';
 
 import { validateMiddleware } from 'middlewares';
 import { productService } from '..';
@@ -32,6 +32,7 @@ type ValidatedData = z.infer<typeof schema>;
 
 async function handler(ctx: AppKoaContext<ValidatedData>) {
   const { perPage, page, sort, searchValue, filter } = ctx.validatedData;
+  console.log(perPage, page, sort, searchValue, filter);
 
   const validatedSearch = searchValue.split('\\').join('\\\\').split('.').join('\\.');
   const regExp = new RegExp(validatedSearch, 'gi');
@@ -40,7 +41,7 @@ async function handler(ctx: AppKoaContext<ValidatedData>) {
     {
       $and: [
         {
-          $or: [{ name: { $regex: regExp } }, { createdOn: {} }],
+          $or: [{ title: { $regex: regExp } }, { createdOn: {} }],
         },
         filter?.price
           ? {
@@ -50,6 +51,9 @@ async function handler(ctx: AppKoaContext<ValidatedData>) {
               },
             }
           : {},
+        {
+          status: ProductStatus.SALE,
+        },
       ],
     },
     { page, perPage },
