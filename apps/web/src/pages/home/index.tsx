@@ -5,15 +5,11 @@ import {
   Select,
   TextInput,
   Group,
-  Title,
   Stack,
   Skeleton,
   Text,
   UnstyledButton,
   Flex,
-  Paper,
-  CloseIcon,
-  NumberInput,
   Pill,
   Container,
   Pagination,
@@ -26,27 +22,12 @@ import { PER_PAGE, selectOptions } from './constants';
 import classes from './index.module.css';
 import { productApi } from '../../resources/product';
 import CardItem from '../../components/CardItem';
-
-interface ProductsListParams {
-  page?: number;
-  perPage?: number;
-  searchValue?: string;
-  sort?: {
-    createdOn: 'asc' | 'desc';
-  };
-  filter?: {
-    price?: {
-      from: number | null;
-      to: number | null;
-    };
-  };
-}
+import { ProductsListParams } from './types/product-list-params.interface';
+import Filters from './components/Filters';
 
 const Home: NextPage = () => {
   const [search, setSearch] = useInputState('');
   const [sortBy, setSortBy] = useState(selectOptions[0].value);
-  const [fromPrice, setFromPrice] = useState<number>();
-  const [toPrice, setToPrice] = useState<number>();
 
   const [params, setParams] = useState<ProductsListParams>({});
 
@@ -68,50 +49,13 @@ const Home: NextPage = () => {
 
   const { data, isLoading: isListLoading } = productApi.useList(params);
 
-  const handleResetAll = () => {
-    setToPrice(1);
-    setFromPrice(1);
-  };
-
   return (
     <>
       <Head>
         <title>Shopy</title>
       </Head>
       <Group gap="lg" align="start" wrap="nowrap">
-        <Paper p="lg" maw="24%">
-          <Group>
-            <Title order={5}>Filters</Title>
-            <Group onClick={handleResetAll}>
-              <Text size="sm">Reset All</Text>
-              <CloseIcon size="16" />
-            </Group>
-          </Group>
-          <Group>
-            <NumberInput
-              leftSection="From:"
-              placeholder=""
-              hideControls
-              min={0}
-              value={fromPrice}
-              decimalScale={2}
-              fixedDecimalScale
-              suffix="$"
-              onChange={(e) => console.log(e)}
-            />
-            <NumberInput
-              leftSection="To:"
-              placeholder=""
-              hideControls
-              min={fromPrice}
-              value={toPrice}
-              decimalScale={2}
-              fixedDecimalScale
-              suffix="$"
-              onChange={(e) => console.log(e)}
-            />
-          </Group>
-        </Paper>
+        <Filters params={params} setParams={setParams} />
         <Stack className={classes.searchAndProducts}>
           <Stack>
             <Skeleton
@@ -182,7 +126,14 @@ const Home: NextPage = () => {
           {data?.items.length ? (
             <Group wrap="wrap">
               {data.items.map((product) => (
-                <CardItem product={product} type="store" maw={320} h={374} hImage={218} />
+                <CardItem
+                  key={product._id}
+                  product={product}
+                  type="store"
+                  maw={320}
+                  h={374}
+                  hImage={218}
+                />
               ))}
             </Group>
           ) : (
