@@ -1,7 +1,4 @@
-.inputSkeleton {
-  flex-grow: 0.25;
-}
-
-.searchAndProducts {
+.filtersWrapper {
   flex-grow: 1;
+  max-width: 315px;
 }

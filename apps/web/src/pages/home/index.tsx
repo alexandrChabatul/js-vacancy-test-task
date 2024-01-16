@@ -55,7 +55,9 @@ const Home: NextPage = () => {
         <title>Shopy</title>
       </Head>
       <Group gap="lg" align="start" wrap="nowrap">
-        <Filters params={params} setParams={setParams} />
+        <div className={classes.filtersWrapper}>
+          <Filters params={params} setParams={setParams} />
+        </div>
         <Stack className={classes.searchAndProducts}>
           <Stack>
             <Skeleton

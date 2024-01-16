@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { Dispatch, FC, SetStateAction, memo } from 'react';
-import { CloseIcon, Group, NumberInput, Paper, Text, Title } from '@mantine/core';
+import { CloseIcon, Group, NumberInput, Paper, Stack, Text, Title } from '@mantine/core';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { ProductsListParams } from '../../types/product-list-params.interface';
@@ -33,7 +33,6 @@ const Filters: FC<FiltersProps> = ({ params, setParams }) => {
     register,
     getValues,
     setValue,
-    handleSubmit,
     formState: { errors },
   } = useForm<FormInputData>({
     resolver: zodResolver(schema),
@@ -43,10 +42,6 @@ const Filters: FC<FiltersProps> = ({ params, setParams }) => {
 
   const handleResetAll = () => {};
 
-  const onSubmit = (data: FormInputData) => {
-    console.log(data);
-  };
-
   const setToValue = () => {
     const fromNum = getValues('from');
     const toNum = getValues('to');
@@ -55,47 +50,62 @@ const Filters: FC<FiltersProps> = ({ params, setParams }) => {
   };
 
   return (
-    <Paper p="lg" maw="24%">
-      <Group>
-        <Title order={5}>Filters</Title>
-        <Group onClick={handleResetAll}>
-          <Text size="sm">Reset All</Text>
-          <CloseIcon size="16" />
+    <Paper p="lg" w="100%">
+      <Stack gap="xl">
+        <Group justify="space-between">
+          <Title order={5}>Filters</Title>
+          <Group onClick={handleResetAll} gap="xs" color="var(--mantine-color-custom-grey-4)">
+            <Text size="sm" c="var(--mantine-color-custom-grey-4)">
+              Reset All
+            </Text>
+            <CloseIcon color="var(--mantine-color-custom-grey-4)" size="14" />
+          </Group>
         </Group>
-      </Group>
-      <Group>
-        <form onChange={handleSubmit(onSubmit)}>
-          <NumberInput
-            {...register('from')}
-            leftSection="From:"
-            rightSection="$"
-            placeholder=""
-            hideControls
-            min={0}
-            max={999999}
-            decimalScale={2}
-            error={errors.from?.message}
-            onChange={(v) => {
-              setValue('from', v);
-            }}
-          />
-          <NumberInput
-            {...register('to')}
-            leftSection="To:"
-            rightSection="$"
-            placeholder=""
-            hideControls
-            min={0}
-            max={999999}
-            decimalScale={2}
-            error={errors.to?.message}
-            onChange={(v) => {
-              setValue('to', v);
-            }}
-            onBlur={setToValue}
-          />
-        </form>
-      </Group>
+        <Stack gap="sm">
+          <Text fw="bold">Price</Text>
+          <Group gap="sm" wrap="nowrap">
+            <NumberInput
+              {...register('from')}
+              leftSection="From:"
+              fz={14}
+              fw="bold"
+              leftSectionProps={{ style: { fontWeight: 'normal' } }}
+              size="sm"
+              suffix="$"
+              placeholder=""
+              hideControls
+              min={0}
+              max={999999}
+              decimalScale={2}
+              error={errors.from?.message}
+              onChange={(v) => {
+                setValue('from', v);
+              }}
+              maw={300}
+            />
+            <NumberInput
+              {...register('to')}
+              maw={300}
+              fw="bold"
+              fz={14}
+              leftSectionProps={{ style: { fontWeight: 'normal' } }}
+              size="sm"
+              leftSection="To:"
+              suffix="$"
+              placeholder=""
+              hideControls
+              min={0}
+              max={999999}
+              decimalScale={2}
+              error={errors.to?.message}
+              onChange={(v) => {
+                setValue('to', v);
+              }}
+              onBlur={setToValue}
+            />
+          </Group>
+        </Stack>
+      </Stack>
     </Paper>
   );
 };

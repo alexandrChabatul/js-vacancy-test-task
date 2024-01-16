@@ -1,5 +1,7 @@
 .input {
   font-size: 16px;
+  padding: var(--input-padding-y, 0) var(--_input-padding-right) var(--input-padding-y, 0)
+    calc(var(--_input-padding-left, 0) + 9px);
 
   &::placeholder,
   &:disabled,
@@ -29,4 +31,16 @@
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 8px;
+}
+
+.section {
+  padding-left: 10px;
+}
+
+.root {
+  font-size: 16px;
+
+  &[data-size='sm'] {
+    font-size: 14px;
+  }
 }
