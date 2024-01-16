@@ -3,7 +3,7 @@ import { AppShell } from '@mantine/core';
 
 import Header from './Header';
 
-import classes from './MainLayout.module.css';
+import classes from './index.module.css';
 
 interface MainLayoutProps {
   children: ReactElement;

@@ -16,10 +16,10 @@ export const columns: ColumnDef<User>[] = [
 export const selectOptions: ComboboxItem[] = [
   {
     value: 'newest',
-    label: 'Newest',
+    label: 'Sort by newest',
   },
   {
     value: 'oldest',
-    label: 'Oldest',
+    label: 'Sort by oldest',
   },
 ];

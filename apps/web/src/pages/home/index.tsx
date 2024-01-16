@@ -13,6 +13,7 @@ import {
   Pill,
   Container,
   Pagination,
+  Grid,
 } from '@mantine/core';
 import { useDebouncedValue, useInputState } from '@mantine/hooks';
 import { IconSearch, IconX, IconChevronDown, IconArrowsDownUp } from '@tabler/icons-react';
@@ -54,51 +55,52 @@ const Home: NextPage = () => {
       <Head>
         <title>Shopy</title>
       </Head>
-      <Group gap="lg" align="start" wrap="nowrap">
+      <Group gap="lg" align="start" wrap="nowrap" pos="relative">
         <div className={classes.filtersWrapper}>
           <Filters params={params} setParams={setParams} />
         </div>
-        <Stack className={classes.searchAndProducts}>
-          <Stack>
-            <Skeleton
-              className={classes.inputSkeleton}
-              height={42}
-              radius="sm"
-              visible={isListLoading}
-              width="100%"
-            >
-              <TextInput
-                w="100%"
-                size="md"
-                value={search}
-                onChange={setSearch}
-                placeholder="Type to search"
-                leftSection={<IconSearch size={16} />}
-                rightSection={
-                  search ? (
-                    <UnstyledButton
-                      component={Flex}
-                      display="flex"
-                      align="center"
-                      onClick={() => setSearch('')}
-                    >
-                      <IconX color="gray" />
-                    </UnstyledButton>
-                  ) : null
-                }
-              />
-            </Skeleton>
+        <Stack className={classes.searchAndProducts} gap="lg">
+          <Skeleton
+            className={classes.inputSkeleton}
+            height={42}
+            radius="sm"
+            visible={isListLoading}
+            width="100%"
+          >
+            <TextInput
+              w="100%"
+              size="lg"
+              value={search}
+              onChange={setSearch}
+              placeholder="Type to search"
+              leftSection={<IconSearch size={16} />}
+              rightSection={
+                search ? (
+                  <UnstyledButton
+                    component={Flex}
+                    display="flex"
+                    align="center"
+                    onClick={() => setSearch('')}
+                  >
+                    <IconX color="gray" />
+                  </UnstyledButton>
+                ) : null
+              }
+            />
+          </Skeleton>
+          <Stack gap="sm">
             <Group w="100%" justify="space-between">
-              <Text>12 results</Text>
+              <Text fw="bold">12 results</Text>
               <Select
-                w={200}
+                w={175}
                 variant="unstyled"
-                size="md"
+                size="sm"
+                fw="500"
                 data={selectOptions}
                 value={sortBy}
                 onChange={handleSort}
-                rightSection={<IconChevronDown size={16} />}
-                leftSection={<IconArrowsDownUp />}
+                rightSection={<IconChevronDown size={14} />}
+                leftSection={<IconArrowsDownUp size={14} />}
                 comboboxProps={{
                   withinPortal: false,
                   transitionProps: {
@@ -112,7 +114,9 @@ const Home: NextPage = () => {
             <Group>
               {pills.map((text) => (
                 <Pill key={`pill-${text}`} withRemoveButton>
-                  {text}
+                  <Text fz={14} fw={500}>
+                    {text}
+                  </Text>
                 </Pill>
               ))}
             </Group>
@@ -126,18 +130,20 @@ const Home: NextPage = () => {
           )}
 
           {data?.items.length ? (
-            <Group wrap="wrap">
+            <Grid justify="space-between">
               {data.items.map((product) => (
-                <CardItem
-                  key={product._id}
-                  product={product}
-                  type="store"
-                  maw={320}
-                  h={374}
-                  hImage={218}
-                />
+                <Grid.Col span={4}>
+                  <CardItem
+                    key={product._id}
+                    product={product}
+                    type="store"
+                    maw={320}
+                    h={374}
+                    hImage={218}
+                  />
+                </Grid.Col>
               ))}
-            </Group>
+            </Grid>
           ) : (
             <Container p={75}>
               <Text size="xl" c="gray">

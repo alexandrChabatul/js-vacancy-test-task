@@ -53,7 +53,9 @@ const Filters: FC<FiltersProps> = ({ params, setParams }) => {
     <Paper p="lg" w="100%">
       <Stack gap="xl">
         <Group justify="space-between">
-          <Title order={5}>Filters</Title>
+          <Title order={5} fz="lg">
+            Filters
+          </Title>
           <Group onClick={handleResetAll} gap="xs" color="var(--mantine-color-custom-grey-4)">
             <Text size="sm" c="var(--mantine-color-custom-grey-4)">
               Reset All
