@@ -18,7 +18,6 @@ interface CardProps {
   h?: number;
   hImage?: number;
 }
-
 const CardItem: FC<CardProps> = ({ product, maw, miw, h, hImage, type }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const { mutate: removeProduct } = productApi.useRemove();

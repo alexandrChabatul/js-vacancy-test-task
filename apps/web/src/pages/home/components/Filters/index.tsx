@@ -1,8 +1,6 @@
-import { z } from 'zod';
-import { Dispatch, FC, SetStateAction, memo } from 'react';
+import { Dispatch, FC, SetStateAction, memo, useEffect } from 'react';
 import { CloseIcon, Group, NumberInput, Paper, Stack, Text, Title } from '@mantine/core';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { useDebouncedValue, useInputState } from '@mantine/hooks';
 import { ProductsListParams } from '../../types/product-list-params.interface';
 
 interface FiltersProps {
@@ -10,44 +8,21 @@ interface FiltersProps {
   setParams: Dispatch<SetStateAction<ProductsListParams>>;
 }
 
-const schema = z.object({
-  from: z
-    .union([z.number(), z.string()])
-    .pipe(z.coerce.number().gte(0, 'Should be positive'))
-    .nullable(),
-  to: z
-    .union([z.number(), z.string()])
-    .pipe(z.coerce.number().gte(0, 'Should be positive'))
-    .nullable(),
-});
-
-type FormInputData = z.input<typeof schema>;
-
 const Filters: FC<FiltersProps> = ({ params, setParams }) => {
-  // const [debouncedFromPrice] = useDebouncedValue(fromPrice, 500);
-  // const [debouncedToPrice] = useDebouncedValue(toPrice, 500);
+  const [from, setFrom] = useInputState<number | undefined>(params.filter?.price?.from);
+  const [to, setTo] = useInputState<number | undefined>(params.filter?.price?.to);
+  const [debouncedFromPrice] = useDebouncedValue(from, 500);
+  const [debouncedToPrice] = useDebouncedValue(to, 500);
 
-  console.log(params, setParams);
-
-  const {
-    register,
-    getValues,
-    setValue,
-    formState: { errors },
-  } = useForm<FormInputData>({
-    resolver: zodResolver(schema),
-    defaultValues: { from: null, to: null },
-    reValidateMode: 'onChange',
-  });
-
-  const handleResetAll = () => {};
-
-  const setToValue = () => {
-    const fromNum = getValues('from');
-    const toNum = getValues('to');
-    if (!toNum || !fromNum) return setValue('to', toNum);
-    setValue('to', +toNum > +fromNum ? +toNum : fromNum);
+  const handleResetAll = () => {
+    setParams({ ...params, filter: { price: { from, to } } });
   };
+
+  useEffect(() => {
+    console.log(to);
+    setParams({ ...params, filter: { price: { from: debouncedFromPrice, to: debouncedToPrice } } });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedFromPrice, debouncedToPrice]);
 
   return (
     <Paper p="lg" w="100%">
@@ -67,43 +42,38 @@ const Filters: FC<FiltersProps> = ({ params, setParams }) => {
           <Text fw="bold">Price</Text>
           <Group gap="sm" wrap="nowrap">
             <NumberInput
-              {...register('from')}
               leftSection="From:"
-              fz={14}
-              fw="bold"
+              fw="500"
               leftSectionProps={{ style: { fontWeight: 'normal' } }}
+              fz={14}
               size="sm"
               suffix="$"
               placeholder=""
               hideControls
+              defaultValue={undefined}
               min={0}
-              max={999999}
-              decimalScale={2}
-              error={errors.from?.message}
-              onChange={(v) => {
-                setValue('from', v);
-              }}
+              max={to || 999999}
               maw={300}
+              decimalScale={2}
+              value={from}
+              onChange={(v) => setFrom(+v === 0 ? undefined : +v)}
             />
             <NumberInput
-              {...register('to')}
               maw={300}
-              fw="bold"
-              fz={14}
+              fw="500"
               leftSectionProps={{ style: { fontWeight: 'normal' } }}
               size="sm"
+              fz={14}
               leftSection="To:"
               suffix="$"
               placeholder=""
               hideControls
-              min={0}
+              defaultValue={undefined}
+              min={from || 0}
               max={999999}
+              value={to}
               decimalScale={2}
-              error={errors.to?.message}
-              onChange={(v) => {
-                setValue('to', v);
-              }}
-              onBlur={setToValue}
+              onChange={(v) => setTo(+v === 0 ? undefined : +v)}
             />
           </Group>
         </Stack>

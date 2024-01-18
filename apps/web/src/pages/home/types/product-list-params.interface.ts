@@ -7,8 +7,8 @@ export interface ProductsListParams {
   };
   filter?: {
     price?: {
-      from: number | null;
-      to: number | null;
+      from: number | undefined;
+      to: number | undefined;
     };
   };
 }

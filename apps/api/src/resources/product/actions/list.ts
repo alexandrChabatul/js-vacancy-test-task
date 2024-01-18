@@ -17,8 +17,8 @@ const schema = z.object({
     .object({
       price: z
         .object({
-          from: z.number(),
-          to: z.number(),
+          from: z.string().optional(),
+          to: z.string().optional(),
         })
         .nullable()
         .default(null),
@@ -41,15 +41,27 @@ async function handler(ctx: AppKoaContext<ValidatedData>) {
     {
       $and: [
         {
-          $or: [{ title: { $regex: regExp } }, { createdOn: {} }],
+          $or: [{ title: { $regex: regExp } }],
         },
         filter?.price
-          ? {
-              price: {
-                $gte: Number(filter.price.from),
-                $lt: Number(filter.price.to),
-              },
-            }
+          ? filter.price.from && filter.price.to
+            ? {
+                price: {
+                  $gte: Number(filter.price.from),
+                  $lt: Number(filter.price.to),
+                },
+              }
+            : filter.price.from
+            ? {
+                price: {
+                  $gte: Number(filter.price.from),
+                },
+              }
+            : {
+                price: {
+                  $lt: Number(filter.price.to),
+                },
+              }
           : {},
         {
           status: ProductStatus.SALE,
