@@ -14,11 +14,12 @@ interface CardProps {
   product: Product;
   type: 'store' | 'account';
   maw?: number;
+  miw?: number;
   h?: number;
   hImage?: number;
 }
 
-const CardItem: FC<CardProps> = ({ product, maw, h, hImage, type }) => {
+const CardItem: FC<CardProps> = ({ product, maw, miw, h, hImage, type }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const { mutate: removeProduct } = productApi.useRemove();
   const handleRemoveProduct = () => {
@@ -38,7 +39,17 @@ const CardItem: FC<CardProps> = ({ product, maw, h, hImage, type }) => {
   const handleAddToCart = () => {};
   return (
     <>
-      <Card padding="lg" radius="lg" withBorder maw={maw} w="100%" h={h} p="md">
+      <Card
+        padding="lg"
+        radius="lg"
+        withBorder
+        maw={maw}
+        w="100%"
+        h={h}
+        p="md"
+        miw={miw}
+        style={{ flexBasis: `${miw}px`, flexGrow: '1' }}
+      >
         <Card.Section pos="relative">
           <Image src={product.photoUrl} h={hImage || 160} alt={product.title} />
           {type === 'account' && (

@@ -13,7 +13,6 @@ import {
   Pill,
   Container,
   Pagination,
-  Grid,
 } from '@mantine/core';
 import { useDebouncedValue, useInputState } from '@mantine/hooks';
 import { IconSearch, IconX, IconChevronDown, IconArrowsDownUp } from '@tabler/icons-react';
@@ -130,20 +129,19 @@ const Home: NextPage = () => {
           )}
 
           {data?.items.length ? (
-            <Grid justify="space-between">
+            <Group gap="1.5rem">
               {data.items.map((product) => (
-                <Grid.Col span={4}>
-                  <CardItem
-                    key={product._id}
-                    product={product}
-                    type="store"
-                    maw={320}
-                    h={374}
-                    hImage={218}
-                  />
-                </Grid.Col>
+                <CardItem
+                  key={product._id}
+                  product={product}
+                  type="store"
+                  maw={320}
+                  miw={240}
+                  h={374}
+                  hImage={218}
+                />
               ))}
-            </Grid>
+            </Group>
           ) : (
             <Container p={75}>
               <Text size="xl" c="gray">
