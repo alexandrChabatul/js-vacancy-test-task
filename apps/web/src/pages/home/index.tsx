@@ -28,7 +28,6 @@ import Filters from './components/Filters';
 const Home: NextPage = () => {
   const [search, setSearch] = useInputState('');
   const [sortBy, setSortBy] = useState(selectOptions[0].value);
-
   const [params, setParams] = useState<ProductsListParams>({});
 
   const [debouncedSearch] = useDebouncedValue(search, 500);

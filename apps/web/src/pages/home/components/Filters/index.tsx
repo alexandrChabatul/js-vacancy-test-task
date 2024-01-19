@@ -9,20 +9,38 @@ interface FiltersProps {
 }
 
 const Filters: FC<FiltersProps> = ({ params, setParams }) => {
-  const [from, setFrom] = useInputState<number | undefined>(params.filter?.price?.from);
-  const [to, setTo] = useInputState<number | undefined>(params.filter?.price?.to);
+  const [from, setFrom] = useInputState<number | string | undefined>(params.filter?.price?.from);
+  const [to, setTo] = useInputState<number | string | undefined>(params.filter?.price?.to);
   const [debouncedFromPrice] = useDebouncedValue(from, 500);
   const [debouncedToPrice] = useDebouncedValue(to, 500);
 
+  // const router = useRouter();
+  // // const pathname = usePathname();
+  // const searchParams = useSearchParams();
+  // // console.log(pathname, searchParams);
+
   const handleResetAll = () => {
-    setParams({ ...params, filter: { price: { from, to } } });
+    setParams({ ...params, filter: { price: { from: undefined, to: undefined } } });
   };
 
   useEffect(() => {
-    console.log(to);
-    setParams({ ...params, filter: { price: { from: debouncedFromPrice, to: debouncedToPrice } } });
+    setParams({
+      ...params,
+      filter: {
+        price: {
+          from: debouncedFromPrice ? +debouncedFromPrice : undefined,
+          to: debouncedToPrice ? +debouncedToPrice : undefined,
+        },
+      },
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedFromPrice, debouncedToPrice]);
+
+  useEffect(() => {
+    setFrom(params.filter?.price?.from || '');
+    setTo(params.filter?.price?.to || '');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params.filter?.price]);
 
   return (
     <Paper p="lg" w="100%">
@@ -52,7 +70,7 @@ const Filters: FC<FiltersProps> = ({ params, setParams }) => {
               hideControls
               defaultValue={undefined}
               min={0}
-              max={to || 999999}
+              max={to ? +to : 999999}
               maw={300}
               decimalScale={2}
               value={from}
@@ -69,7 +87,7 @@ const Filters: FC<FiltersProps> = ({ params, setParams }) => {
               placeholder=""
               hideControls
               defaultValue={undefined}
-              min={from || 0}
+              min={from ? +from : 0}
               max={999999}
               value={to}
               decimalScale={2}
