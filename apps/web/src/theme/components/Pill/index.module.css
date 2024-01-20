@@ -1,0 +1,17 @@
+.root {
+  border-radius: 31px;
+  border: 1px solid;
+  border-color: var(--mantine-color-custom-grey-2);
+}
+
+.remove {
+  margin-top: 2px;
+  margin-left: 10px;
+  width: 1rem;
+  min-width: 18px;
+  height: 18px;
+  color: white;
+  background-color: var(--mantine-color-custom-grey-4);
+  border-radius: 50%;
+  font-size: 3px;
+}

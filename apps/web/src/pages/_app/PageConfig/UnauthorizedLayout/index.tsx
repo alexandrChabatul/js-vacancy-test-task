@@ -22,7 +22,7 @@ interface UnauthorizedLayoutProps {
 }
 
 const UnauthorizedLayout: FC<UnauthorizedLayoutProps> = ({ children }) => (
-  <Group justify="center">
+  <Group justify="center" w="100vw">
     <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="sm" p={32} h="100vh" className={classes.wrapper}>
       <Center w="100%" h="100%" component="main">
         {children}

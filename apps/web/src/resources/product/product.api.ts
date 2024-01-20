@@ -1,4 +1,4 @@
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 
 import { apiService } from 'services';
 import { Product } from 'types';
@@ -25,4 +25,16 @@ export function useRemove() {
   const removeProduct = (id: string) => apiService.delete(`/products/${id}`);
 
   return useMutation<void, unknown, string>(removeProduct);
+}
+
+export function useList<T>(params: T) {
+  const list = () => apiService.get('/products', params);
+
+  interface ProductsListResponse {
+    count: number;
+    items: Product[];
+    totalPages: number;
+  }
+
+  return useQuery<ProductsListResponse>(['products', params], list);
 }

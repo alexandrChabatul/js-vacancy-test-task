@@ -12,5 +12,6 @@ export default NumberInput.extend({
       [classes.inputError]: props.error,
     }),
     label: classes.label,
+    section: classes.section,
   }),
 });

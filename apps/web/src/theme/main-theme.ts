@@ -41,6 +41,7 @@ const mainTheme = createTheme({
   primaryShade: 6,
   defaultRadius: 8,
   components,
+  black: '#201F22',
 });
 
 export default mainTheme;

@@ -1,14 +1,13 @@
 import { z } from 'zod';
 
-import { AppKoaContext, AppRouter } from 'types';
-
-import { userService } from 'resources/user';
+import { AppKoaContext, AppRouter, ProductStatus } from 'types';
 
 import { validateMiddleware } from 'middlewares';
+import { productService } from '..';
 
 const schema = z.object({
   page: z.string().transform(Number).default('1'),
-  perPage: z.string().transform(Number).default('10'),
+  perPage: z.string().transform(Number).default('6'),
   sort: z
     .object({
       createdOn: z.enum(['asc', 'desc']),
@@ -16,10 +15,10 @@ const schema = z.object({
     .default({ createdOn: 'desc' }),
   filter: z
     .object({
-      createdOn: z
+      price: z
         .object({
-          sinceDate: z.string(),
-          dueDate: z.string(),
+          from: z.string().optional(),
+          to: z.string().optional(),
         })
         .nullable()
         .default(null),
@@ -33,24 +32,40 @@ type ValidatedData = z.infer<typeof schema>;
 
 async function handler(ctx: AppKoaContext<ValidatedData>) {
   const { perPage, page, sort, searchValue, filter } = ctx.validatedData;
+  console.log(perPage, page, sort, searchValue, filter);
 
   const validatedSearch = searchValue.split('\\').join('\\\\').split('.').join('\\.');
   const regExp = new RegExp(validatedSearch, 'gi');
 
-  const users = await userService.find(
+  const products = await productService.find(
     {
       $and: [
         {
-          $or: [{ email: { $regex: regExp } }, { createdOn: {} }],
+          $or: [{ title: { $regex: regExp } }],
         },
-        filter?.createdOn
-          ? {
-              createdOn: {
-                $gte: new Date(filter.createdOn.sinceDate as string),
-                $lt: new Date(filter.createdOn.dueDate as string),
-              },
-            }
+        filter?.price
+          ? filter.price.from && filter.price.to
+            ? {
+                price: {
+                  $gte: Number(filter.price.from),
+                  $lt: Number(filter.price.to),
+                },
+              }
+            : filter.price.from
+            ? {
+                price: {
+                  $gte: Number(filter.price.from),
+                },
+              }
+            : {
+                price: {
+                  $lt: Number(filter.price.to),
+                },
+              }
           : {},
+        {
+          status: ProductStatus.SALE,
+        },
       ],
     },
     { page, perPage },
@@ -58,9 +73,9 @@ async function handler(ctx: AppKoaContext<ValidatedData>) {
   );
 
   ctx.body = {
-    items: users.results,
-    totalPages: users.pagesCount,
-    count: users.count,
+    items: products.results,
+    totalPages: products.pagesCount,
+    count: products.count,
   };
 }
 

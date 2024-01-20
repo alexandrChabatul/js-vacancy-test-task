@@ -14,11 +14,11 @@ interface CardProps {
   product: Product;
   type: 'store' | 'account';
   maw?: number;
+  miw?: number;
   h?: number;
   hImage?: number;
 }
-
-const CardItem: FC<CardProps> = ({ product, maw, h, hImage, type }) => {
+const CardItem: FC<CardProps> = ({ product, maw, miw, h, hImage, type }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const { mutate: removeProduct } = productApi.useRemove();
   const handleRemoveProduct = () => {
@@ -38,7 +38,17 @@ const CardItem: FC<CardProps> = ({ product, maw, h, hImage, type }) => {
   const handleAddToCart = () => {};
   return (
     <>
-      <Card padding="lg" radius="lg" withBorder maw={maw} w="100%" h={h} p="md">
+      <Card
+        padding="lg"
+        radius="lg"
+        withBorder
+        maw={maw}
+        w="100%"
+        h={h}
+        p="md"
+        miw={miw}
+        style={{ flexBasis: `${miw}px`, flexGrow: '1' }}
+      >
         <Card.Section pos="relative">
           <Image src={product.photoUrl} h={hImage || 160} alt={product.title} />
           {type === 'account' && (
@@ -71,12 +81,17 @@ const CardItem: FC<CardProps> = ({ product, maw, h, hImage, type }) => {
           <Text size="sm" c="var(--mantine-color-custom-grey-4)" truncate>
             Price:
           </Text>
-          <Text fw="bold" size="xl" lh={1.3} truncate>
+          <Text fw="bold" size="xl" lh={1.3} maw="80%" truncate>
             {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
               product.price
             )}
           </Text>
         </Group>
+        {type === 'store' && (
+          <Button fullWidth mt="md" radius="md" size="md" onClick={handleAddToCart}>
+            Add to Cart
+          </Button>
+        )}
       </Card>
       {type === 'account' && (
         <ConfirmDialog
@@ -87,11 +102,6 @@ const CardItem: FC<CardProps> = ({ product, maw, h, hImage, type }) => {
           acceptText="Delete"
           cancelText="Cancel"
         />
-      )}
-      {type === 'store' && (
-        <Button fullWidth mt="md" radius="md" size="md" onClick={handleAddToCart}>
-          Add to Cart
-        </Button>
       )}
     </>
   );

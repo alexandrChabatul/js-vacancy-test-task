@@ -1,7 +1,19 @@
-.inputSkeleton {
-  flex-grow: 0.25
+.contentLoading {
+  opacity: 0.5;
+  pointer-events: none;
 }
 
-.datePickerSkeleton {
-  overflow: unset;
+.filtersWrapper {
+  flex-grow: 1;
+  max-width: 315px;
+  position: sticky;
+  top: 106px;
+}
+
+.searchAndProducts {
+  flex-grow: 1;
+}
+
+.pagination {
+  align-self: center;
 }
