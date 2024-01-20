@@ -18,7 +18,10 @@ export function useList<T>(params: T) {
 }
 
 export function useAddToCart<T>() {
-  const addToCart = (data: T) => apiService.post('/users/cart', data);
+  const addToCart = (data: T) => {
+    console.log(data);
+    return apiService.post('/users/cart', data);
+  };
 
   return useMutation<User, unknown, T>(addToCart, {
     onSuccess: (data) => {

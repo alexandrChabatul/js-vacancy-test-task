@@ -25,4 +25,8 @@
       color: var(--mantine-color-custom-blue-6);
     }
   }
+  &:disabled {
+    opacity: 0.65;
+    color: white;
+  }
 }

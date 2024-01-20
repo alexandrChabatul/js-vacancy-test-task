@@ -1,5 +1,5 @@
 import { FC, memo, useState } from 'react';
-import { ActionIcon, Badge, Button, Card, Group, Image, Stack, Text } from '@mantine/core';
+import { ActionIcon, Badge, Card, Group, Image, Stack, Text } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { IconTrash } from '@tabler/icons-react';
 import { Product } from 'types';
@@ -9,6 +9,7 @@ import { handleError } from 'utils';
 import ConfirmDialog from '../ConfirmDialog';
 
 import classes from './index.module.css';
+import AddToCartButton from '../AddToCartButton';
 
 interface CardProps {
   product: Product;
@@ -35,7 +36,6 @@ const CardItem: FC<CardProps> = ({ product, maw, miw, h, hImage, type }) => {
       onError: (e) => handleError(e),
     });
   };
-  const handleAddToCart = () => {};
   return (
     <>
       <Card
@@ -87,11 +87,7 @@ const CardItem: FC<CardProps> = ({ product, maw, miw, h, hImage, type }) => {
             )}
           </Text>
         </Group>
-        {type === 'store' && (
-          <Button fullWidth mt="md" radius="md" size="md" onClick={handleAddToCart}>
-            Add to Cart
-          </Button>
-        )}
+        {type === 'store' && <AddToCartButton productId={product._id} />}
       </Card>
       {type === 'account' && (
         <ConfirmDialog
