@@ -10,5 +10,6 @@ export const productSchema = dbSchema
     price: z.number(),
     status: z.nativeEnum(ProductStatus),
     userId: z.string(),
+    quantity: z.number().optional(),
   })
   .strict();
