@@ -14,13 +14,8 @@ const Filters: FC<FiltersProps> = ({ params, setParams }) => {
   const [debouncedFromPrice] = useDebouncedValue(from, 500);
   const [debouncedToPrice] = useDebouncedValue(to, 500);
 
-  // const router = useRouter();
-  // // const pathname = usePathname();
-  // const searchParams = useSearchParams();
-  // // console.log(pathname, searchParams);
-
   const handleResetAll = () => {
-    setParams({ ...params, filter: { price: { from: undefined, to: undefined } } });
+    setParams({ ...params, filter: { price: undefined } });
   };
 
   useEffect(() => {

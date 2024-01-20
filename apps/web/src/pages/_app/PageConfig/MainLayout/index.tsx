@@ -18,7 +18,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => (
     }}
   >
     <Header />
-    <AppShell.Main>
+    <AppShell.Main w="100vw">
       <div className={classes.mainWrapper}>{children}</div>
     </AppShell.Main>
   </AppShell>

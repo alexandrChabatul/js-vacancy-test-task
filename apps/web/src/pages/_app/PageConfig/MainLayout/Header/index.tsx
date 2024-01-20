@@ -19,7 +19,7 @@ const Header: FC = () => {
   if (!account) return null;
 
   return (
-    <LayoutHeader className={classes.headerWrapper}>
+    <LayoutHeader className={classes.headerWrapper} w="100vw">
       <Container className={classes.header} mih={72} px={48} pt={33} display="flex" fluid>
         <Link href={RoutePath.Home}>
           <LogoImage />
