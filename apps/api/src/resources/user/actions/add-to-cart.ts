@@ -18,6 +18,7 @@ interface ValidatedData extends z.infer<typeof schema> {
 }
 
 async function validator(ctx: AppKoaContext<ValidatedData>, next: Next) {
+  console.log(ctx.validatedData);
   const { productId } = ctx.validatedData;
   const product = await productService.findOne({ _id: productId });
 
@@ -48,5 +49,5 @@ async function handler(ctx: AppKoaContext<ValidatedData>) {
 }
 
 export default (router: AppRouter) => {
-  router.post('/cart', validator, validateMiddleware(schema), handler);
+  router.post('/cart', validateMiddleware(schema), validator, handler);
 };
