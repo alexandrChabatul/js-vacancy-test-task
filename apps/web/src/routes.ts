@@ -12,7 +12,7 @@ export enum RoutePath {
   // Private paths
   Home = '/',
   Profile = '/profile',
-  Cart = '/Cart',
+  Cart = '/cart',
 
   // Auth paths
   SignIn = '/sign-in',
