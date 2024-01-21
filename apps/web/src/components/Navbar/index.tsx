@@ -1,23 +1,22 @@
 import { FC, memo } from 'react';
-import { Group } from '@mantine/core';
+import { Group, Text } from '@mantine/core';
 
 import { accountApi } from 'resources/account';
 import Link from 'next/link';
-import { RoutePath } from 'routes';
 import { useRouter } from 'next/router';
 import classNames from 'classnames';
+import { LinkData } from './types/link-data.interface';
+
 import classes from './index.module.css';
 
-const Navbar: FC = () => {
+interface NavbarProps {
+  links: LinkData[];
+  fz?: number;
+  type?: 'fill' | 'text';
+}
+
+const Navbar: FC<NavbarProps> = ({ links, fz = 16, type = 'fill' }) => {
   const router = useRouter();
-  const links = [
-    { link: RoutePath.Home, label: 'Marketplace', regex: new RegExp(`^${RoutePath.Home}$`) },
-    {
-      link: RoutePath.Products,
-      label: 'Your Products',
-      regex: new RegExp(`^${RoutePath.Products}`),
-    },
-  ];
 
   const { data: account } = accountApi.useGet();
 
@@ -27,13 +26,15 @@ const Navbar: FC = () => {
     <Group gap="xl" visibleFrom="sm">
       {links.map((link) => (
         <Link type="router" key={link.label} href={link.link} style={{ textDecoration: 'none' }}>
-          <span
+          <Text
             className={classNames(classes.link, {
-              [classes.linkActive]: link.regex.test(router.pathname),
+              [classes.linkActive]: link.regex.test(router.pathname) && type === 'fill',
+              [classes.linkActiveText]: link.regex.test(router.pathname) && type === 'text',
             })}
+            fz={fz}
           >
             {link.label}
-          </span>
+          </Text>
         </Link>
       ))}
     </Group>
