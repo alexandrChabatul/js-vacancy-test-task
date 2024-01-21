@@ -1,7 +1,8 @@
 .link {
   background-color: transparent;
   color: var(--mantine-color-custom-grey-4);
-  padding: 8px 22px;
+  padding-top: 8px;
+  padding-bottom: 8px;
   line-height: 24px;
   border-radius: 20px;
   text-decoration: none;

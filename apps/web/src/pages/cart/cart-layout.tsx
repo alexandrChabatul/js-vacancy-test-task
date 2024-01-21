@@ -20,7 +20,7 @@ const links: LinkData[] = [
 const CartLayout: FC<CartLayoutProps> = ({ children }) => (
   <>
     <Title hidden>Cart</Title>
-    <Navbar links={links} fz={20} type="text" />
+    <Navbar links={links} fz={20} type="text" px={0} />
     {children}
   </>
 );

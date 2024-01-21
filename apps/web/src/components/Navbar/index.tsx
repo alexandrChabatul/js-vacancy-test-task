@@ -13,9 +13,10 @@ interface NavbarProps {
   links: LinkData[];
   fz?: number;
   type?: 'fill' | 'text';
+  px?: number;
 }
 
-const Navbar: FC<NavbarProps> = ({ links, fz = 16, type = 'fill' }) => {
+const Navbar: FC<NavbarProps> = ({ links, fz = 16, type = 'fill', px = 20 }) => {
   const router = useRouter();
 
   const { data: account } = accountApi.useGet();
@@ -25,7 +26,12 @@ const Navbar: FC<NavbarProps> = ({ links, fz = 16, type = 'fill' }) => {
   return (
     <Group gap="xl" visibleFrom="sm">
       {links.map((link) => (
-        <Link type="router" key={link.label} href={link.link} style={{ textDecoration: 'none' }}>
+        <Link
+          type="router"
+          key={link.label}
+          href={link.link}
+          style={{ textDecoration: 'none', paddingLeft: `${px}px`, paddingRight: `${px}px` }}
+        >
           <Text
             className={classNames(classes.link, {
               [classes.linkActive]: link.regex.test(router.pathname) && type === 'fill',
