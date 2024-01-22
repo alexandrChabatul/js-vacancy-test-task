@@ -1,3 +1,17 @@
-.headerButton {
-  justify-content: space-between;
+.tableHeader {
+  .tableHeaderRow:not(:first-child) {
+    padding-left: 100px;
+  }
+  .tableHeaderRow:first-child {
+    .headerButton {
+      justify-content: start;
+    }
+  }
+  .headerButton {
+    justify-content: end;
+    color: var(--mantine-color-custom-grey-5);
+    font-weight: 500;
+    text-align: right;
+    width: 100%;
+  }
 }
