@@ -4,15 +4,16 @@ import { accountApi } from 'resources/account';
 import CartLayout from './cart-layout';
 import EmptyCart from './components/EmptyCart';
 import CartItems from './components/CartItems';
+import CartSummary from './components/CartSummary';
 
 const Cart: NextPage = () => {
   const { data: user } = accountApi.useGet();
   return (
     <CartLayout>
       {user?.cart.length ? (
-        <Group wrap="nowrap" mt="md">
+        <Group wrap="nowrap" mt="md" justify="space-between">
           <CartItems items={user.cart} />
-          <div>1231231231231123123123</div>
+          <CartSummary items={user.cart} />
         </Group>
       ) : (
         <EmptyCart />

@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { Product } from 'types';
 import { Table } from 'components';
+import { Container } from '@mantine/core';
 import { columns } from './constants';
 
 interface CartItemInterface {
@@ -8,7 +9,9 @@ interface CartItemInterface {
 }
 
 const CartItems: FC<CartItemInterface> = ({ items }) => (
-  <Table columns={columns} data={items} perPage={5} horizontalSpacing={0} verticalSpacing={0} />
+  <Container maw={950} p={0} m={0}>
+    <Table columns={columns} data={items} perPage={5} horizontalSpacing={0} verticalSpacing={0} />
+  </Container>
 );
 
 export default CartItems;

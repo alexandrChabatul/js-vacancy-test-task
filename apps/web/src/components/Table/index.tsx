@@ -52,7 +52,6 @@ const Table: FC<TableProps> = ({
     pageSize: perPage,
   });
   const isSelectable = !!rowSelection && !!setRowSelection;
-  const isSortable = useMemo(() => !!onSortingChange, [onSortingChange]);
 
   const selectableColumns: ColumnDef<unknown, any>[] = useMemo(
     () => [
@@ -130,16 +129,8 @@ const Table: FC<TableProps> = ({
   return (
     <>
       <TableContainer horizontalSpacing={horizontalSpacing} verticalSpacing={verticalSpacing}>
-        <Thead
-          isSortable={isSortable}
-          headerGroups={table.getHeaderGroups()}
-          flexRender={flexRender}
-        />
-        <Tbody
-          isSelectable={isSelectable}
-          rows={table.getRowModel().rows}
-          flexRender={flexRender}
-        />
+        <Thead headerGroups={table.getHeaderGroups()} flexRender={flexRender} />
+        <Tbody rows={table.getRowModel().rows} flexRender={flexRender} />
       </TableContainer>
 
       <Group justify="flex-end">

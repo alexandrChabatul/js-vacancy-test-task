@@ -1,6 +1,5 @@
 import { FC, ReactNode } from 'react';
-import { Table, UnstyledButton } from '@mantine/core';
-import { IconSortAscending, IconSortDescending, IconArrowsSort } from '@tabler/icons-react';
+import { Group, Table } from '@mantine/core';
 import { ColumnDefTemplate, HeaderContext, HeaderGroup } from '@tanstack/react-table';
 
 import classes from './thead.module.css';
@@ -10,7 +9,6 @@ type CellData = {
 };
 
 interface TheadProps {
-  isSortable: boolean;
   headerGroups: HeaderGroup<CellData>[];
   flexRender: (
     template: ColumnDefTemplate<HeaderContext<CellData, any>> | undefined,
@@ -18,7 +16,7 @@ interface TheadProps {
   ) => ReactNode;
 }
 
-const Thead: FC<TheadProps> = ({ isSortable, headerGroups, flexRender }) => (
+const Thead: FC<TheadProps> = ({ headerGroups, flexRender }) => (
   <Table.Thead>
     {headerGroups.map((headerGroup) => (
       <Table.Tr key={headerGroup.id} style={{ border: 'none' }} className={classes.tableHeader}>
@@ -26,28 +24,13 @@ const Thead: FC<TheadProps> = ({ isSortable, headerGroups, flexRender }) => (
           <Table.Th
             key={header.id}
             colSpan={header.colSpan}
-            style={{
-              width: header.id === 'select' ? '24px' : 'min-content',
-            }}
             className={classes.tableHeaderRow}
+            w={header.column.getSize()}
           >
             {!header.isPlaceholder && (
-              <UnstyledButton
-                className={classes.headerButton}
-                w="100%"
-                display="flex"
-                onClick={header.column.getToggleSortingHandler()}
-              >
+              <Group className={classes.headerButton}>
                 {flexRender(header.column.columnDef.header, header.getContext())}
-                {isSortable &&
-                  header.id !== 'select' &&
-                  ({
-                    false: <IconArrowsSort size={16} />,
-                    asc: <IconSortAscending size={16} />,
-                    desc: <IconSortDescending size={16} />,
-                  }[String(header.column.getIsSorted())] ??
-                    null)}
-              </UnstyledButton>
+              </Group>
             )}
           </Table.Th>
         ))}

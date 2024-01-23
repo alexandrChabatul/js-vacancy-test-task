@@ -1,11 +1,10 @@
 import { z } from 'zod';
 
-import { AppKoaContext, Next, AppRouter, Product, User } from 'types';
+import { AppKoaContext, Next, AppRouter, Product } from 'types';
 
 import { userService } from 'resources/user';
 
 import { validateMiddleware } from 'middlewares';
-import { productService } from '../../product';
 import { analyticsService } from 'services';
 
 const schema = z.object({
@@ -18,10 +17,10 @@ interface ValidatedData extends z.infer<typeof schema> {
 
 async function validator(ctx: AppKoaContext<ValidatedData>, next: Next) {
   const { productId } = ctx.validatedData;
-  const product = await productService.findOne({ _id: productId });
+  const { user } = ctx.state;
+  const product = user.cart.find((i) => i._id == productId);
 
-  ctx.assertError(product, 'Product not found');
-  // ctx.assertError(product.userId !== user._id, "Can't add to cart own products");
+  ctx.assertError(product, 'Product should be in cart.');
 
   ctx.validatedData.product = product;
 
@@ -32,13 +31,9 @@ async function handler(ctx: AppKoaContext<ValidatedData>) {
   const { product } = ctx.validatedData;
   const { user } = ctx.state;
 
-  let updatedUser: User | null;
+  const updatedUser = await userService.increaseQuantity(user._id, product);
 
-  const isInCart = user.cart.some((item) => item._id === product._id);
-  if (isInCart) updatedUser = await userService.increaseQuantity(user._id, product);
-  else updatedUser = await userService.addToCart(user._id, product);
-
-  analyticsService.track('Add to cart', {
+  analyticsService.track('Increase cart value', {
     productId: product._id,
     userId: user._id,
   });
@@ -47,5 +42,5 @@ async function handler(ctx: AppKoaContext<ValidatedData>) {
 }
 
 export default (router: AppRouter) => {
-  router.post('/cart', validateMiddleware(schema), validator, handler);
+  router.patch('/cart/increase', validateMiddleware(schema), validator, handler);
 };
