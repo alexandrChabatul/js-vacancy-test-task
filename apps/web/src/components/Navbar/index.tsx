@@ -1,5 +1,5 @@
 import { FC, memo } from 'react';
-import { Group, Text } from '@mantine/core';
+import { Group, MantineSize, Text } from '@mantine/core';
 
 import { accountApi } from 'resources/account';
 import Link from 'next/link';
@@ -14,9 +14,10 @@ interface NavbarProps {
   fz?: number;
   type?: 'fill' | 'text';
   px?: number;
+  mb?: number | MantineSize;
 }
 
-const Navbar: FC<NavbarProps> = ({ links, fz = 16, type = 'fill', px = 20 }) => {
+const Navbar: FC<NavbarProps> = ({ links, fz = 16, type = 'fill', px = 20, mb }) => {
   const router = useRouter();
 
   const { data: account } = accountApi.useGet();
@@ -24,7 +25,7 @@ const Navbar: FC<NavbarProps> = ({ links, fz = 16, type = 'fill', px = 20 }) => 
   if (!account) return null;
 
   return (
-    <Group gap="xl" visibleFrom="sm">
+    <Group gap="xl" visibleFrom="sm" mb={mb}>
       {links.map((link) => (
         <Link type="router" key={link.label} href={link.link} style={{ textDecoration: 'none' }}>
           <Text

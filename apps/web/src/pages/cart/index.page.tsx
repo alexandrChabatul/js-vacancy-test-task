@@ -14,7 +14,7 @@ const Cart: NextPage = () => {
   return (
     <CartLayout>
       {user?.cart.length ? (
-        <Group wrap="nowrap" mt="md" justify="space-between">
+        <Group wrap="nowrap" justify="space-between">
           <Container maw={950} p={0} m={0} className={classes.cartTableWrapper}>
             <Table
               columns={cartColumns}

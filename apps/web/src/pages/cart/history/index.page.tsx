@@ -1,15 +1,32 @@
 import { NextPage } from 'next';
 import React from 'react';
 import { accountApi } from 'resources/account';
-import { Text } from '@mantine/core';
+import { Container } from '@mantine/core';
 import CartLayout from '../cart-layout';
+import { Table } from '../../../components';
+import { historyColumns } from '../constants';
+import EmptyCart from '../components/EmptyCart';
 
+import classes from './index.module.css';
+
+// Todo: change to history from cart
 const History: NextPage = () => {
   const { data: user } = accountApi.useGet();
-  console.log(user);
   return (
     <CartLayout>
-      <Text>History</Text>
+      {user?.cart.length ? (
+        <Container maw={950} p={0} m={0} className={classes.cartTableWrapper}>
+          <Table
+            columns={historyColumns}
+            data={user.cart}
+            perPage={5}
+            horizontalSpacing={0}
+            verticalSpacing={0}
+          />
+        </Container>
+      ) : (
+        <EmptyCart />
+      )}
     </CartLayout>
   );
 };
