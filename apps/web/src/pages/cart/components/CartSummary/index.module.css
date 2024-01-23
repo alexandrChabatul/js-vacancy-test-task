@@ -1,0 +1,6 @@
+.summaryWrapper {
+  flex-grow: 1;
+  position: sticky;
+  top: 106px;
+  transform: translateY(-60px);
+}
