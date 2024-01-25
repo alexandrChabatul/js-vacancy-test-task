@@ -1,12 +1,5 @@
 import { useMemo, useCallback, useState, FC } from 'react';
-import {
-  Table as TableContainer,
-  Checkbox,
-  Pagination,
-  Group,
-  Text,
-  Paper,
-} from '@mantine/core';
+import { Table as TableContainer, Checkbox, Pagination, Group, Text } from '@mantine/core';
 import {
   ColumnDef,
   flexRender,
@@ -29,8 +22,8 @@ interface TableProps {
   data: RowData[];
   dataCount?: number;
   columns: ColumnDef<any>[];
-  horizontalSpacing?: SpacingSizes;
-  verticalSpacing?: SpacingSizes;
+  horizontalSpacing?: SpacingSizes | 0;
+  verticalSpacing?: SpacingSizes | 0;
   rowSelection?: RowSelectionState;
   setRowSelection?: OnChangeFn<RowSelectionState>;
   sorting?: SortingState;
@@ -59,38 +52,48 @@ const Table: FC<TableProps> = ({
     pageSize: perPage,
   });
   const isSelectable = !!rowSelection && !!setRowSelection;
-  const isSortable = useMemo(() => !!onSortingChange, [onSortingChange]);
 
-  const selectableColumns: ColumnDef<unknown, any>[] = useMemo(() => [{
-    id: 'select',
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllRowsSelected()}
-        indeterminate={table.getIsSomeRowsSelected()}
-        onChange={table.getToggleAllRowsSelectedHandler()}
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        indeterminate={row.getIsSomeSelected()}
-        onChange={row.getToggleSelectedHandler()}
-      />
-    ),
-  }], []);
+  const selectableColumns: ColumnDef<unknown, any>[] = useMemo(
+    () => [
+      {
+        id: 'select',
+        header: ({ table }) => (
+          <Checkbox
+            checked={table.getIsAllRowsSelected()}
+            indeterminate={table.getIsSomeRowsSelected()}
+            onChange={table.getToggleAllRowsSelectedHandler()}
+          />
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            checked={row.getIsSelected()}
+            indeterminate={row.getIsSomeSelected()}
+            onChange={row.getToggleSelectedHandler()}
+          />
+        ),
+      },
+    ],
+    []
+  );
 
-  const pagination = useMemo(() => ({
-    pageIndex,
-    pageSize,
-  }), [pageIndex, pageSize]);
+  const pagination = useMemo(
+    () => ({
+      pageIndex,
+      pageSize,
+    }),
+    [pageIndex, pageSize]
+  );
 
-  const onPageChangeHandler = useCallback((currentPage: any, direction?: string) => {
-    setPagination({ pageIndex: currentPage, pageSize });
+  const onPageChangeHandler = useCallback(
+    (currentPage: any, direction?: string) => {
+      setPagination({ pageIndex: currentPage, pageSize });
 
-    if (onPageChange) {
-      onPageChange((prev: Record<string, any>) => ({ ...prev, page: currentPage, direction }));
-    }
-  }, [onPageChange, pageSize]);
+      if (onPageChange) {
+        onPageChange((prev: Record<string, any>) => ({ ...prev, page: currentPage, direction }));
+      }
+    },
+    [onPageChange, pageSize]
+  );
 
   const table = useReactTable({
     data,
@@ -125,36 +128,15 @@ const Table: FC<TableProps> = ({
 
   return (
     <>
-      <Paper radius="sm" withBorder>
-        <TableContainer
-          horizontalSpacing={horizontalSpacing}
-          verticalSpacing={verticalSpacing}
-        >
-          <Thead
-            isSortable={isSortable}
-            headerGroups={table.getHeaderGroups()}
-            flexRender={flexRender}
-          />
-          <Tbody
-            isSelectable={isSelectable}
-            rows={table.getRowModel().rows}
-            flexRender={flexRender}
-          />
-        </TableContainer>
-      </Paper>
+      <TableContainer horizontalSpacing={horizontalSpacing} verticalSpacing={verticalSpacing}>
+        <Thead headerGroups={table.getHeaderGroups()} flexRender={flexRender} />
+        <Tbody rows={table.getRowModel().rows} flexRender={flexRender} />
+      </TableContainer>
 
       <Group justify="flex-end">
         {dataCount && (
           <Text size="sm" c="gray.6">
-            Showing
-            {' '}
-            <b>{table.getRowModel().rows.length}</b>
-            {' '}
-            of
-            {' '}
-            <b>{dataCount}</b>
-            {' '}
-            results
+            Showing <b>{table.getRowModel().rows.length}</b> of <b>{dataCount}</b> results
           </Text>
         )}
         {renderPagination()}

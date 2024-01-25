@@ -1,0 +1,7 @@
+.tableBody {
+  width: min-content;
+  .tableBodyItem:not(:first-child) {
+    padding-left: 56px;
+    width: min-content;
+  }
+}

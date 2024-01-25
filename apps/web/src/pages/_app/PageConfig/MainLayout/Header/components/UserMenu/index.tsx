@@ -10,6 +10,7 @@ import { CartIcon, LogoutIcon } from 'public/icons';
 import classes from './index.module.css';
 
 const UserMenu: FC = () => {
+  const { data: user } = accountApi.useGet();
   const { mutate: signOut } = accountApi.useSignOut();
 
   // ToDo add cart count
@@ -21,7 +22,7 @@ const UserMenu: FC = () => {
         style={{ textDecoration: 'none' }}
         className={classes.iconButton}
       >
-        <Indicator inline disabled={false} label={2} size={20}>
+        <Indicator inline disabled={!user?.cart.length} label={user?.cart.length} size={20}>
           <UnstyledButton className={classes.iconButton}>
             <CartIcon />
           </UnstyledButton>

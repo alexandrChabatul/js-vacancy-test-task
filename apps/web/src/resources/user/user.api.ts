@@ -18,10 +18,7 @@ export function useList<T>(params: T) {
 }
 
 export function useAddToCart<T>() {
-  const addToCart = (data: T) => {
-    console.log(data);
-    return apiService.post('/users/cart', data);
-  };
+  const addToCart = (data: T) => apiService.post('/users/cart', data);
 
   return useMutation<User, unknown, T>(addToCart, {
     onSuccess: (data) => {
@@ -34,6 +31,26 @@ export function useRemoveFromCart() {
   const removeFromCart = (id: string) => apiService.delete(`/users/cart/${id}`);
 
   return useMutation<User, unknown, string>(removeFromCart, {
+    onSuccess: (data) => {
+      queryClient.setQueryData(['account'], data);
+    },
+  });
+}
+
+export function useIncreaseItemCount<T>() {
+  const increaseItemCount = (data: T) => apiService.patch('/users/cart/increase', data);
+
+  return useMutation<User, unknown, T>(increaseItemCount, {
+    onSuccess: (data) => {
+      queryClient.setQueryData(['account'], data);
+    },
+  });
+}
+
+export function useDecreaseItemCount<T>() {
+  const decreaseItemCount = (data: T) => apiService.patch('/users/cart/decrease', data);
+
+  return useMutation<User, unknown, T>(decreaseItemCount, {
     onSuccess: (data) => {
       queryClient.setQueryData(['account'], data);
     },

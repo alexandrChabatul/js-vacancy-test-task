@@ -8,10 +8,20 @@ import { RoutePath } from 'routes';
 
 import { LogoImage } from 'public/images';
 
+import { LinkData } from 'components/Navbar/types/link-data.interface';
+import Navbar from 'components/Navbar';
 import UserMenu from './components/UserMenu';
 
 import classes from './index.module.css';
-import Navbar from './components/Navbar';
+
+const links: LinkData[] = [
+  { link: RoutePath.Home, label: 'Marketplace', regex: new RegExp(`^${RoutePath.Home}$`) },
+  {
+    link: RoutePath.Products,
+    label: 'Your Products',
+    regex: new RegExp(`^${RoutePath.Products}`),
+  },
+];
 
 const Header: FC = () => {
   const { data: account } = accountApi.useGet();
@@ -24,7 +34,7 @@ const Header: FC = () => {
         <Link href={RoutePath.Home}>
           <LogoImage />
         </Link>
-        <Navbar />
+        <Navbar links={links} />
         <UserMenu />
       </Container>
     </LayoutHeader>
