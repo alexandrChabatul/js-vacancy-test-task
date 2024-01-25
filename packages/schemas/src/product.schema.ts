@@ -8,7 +8,7 @@ export const productSchema = dbSchema
     photoUrl: z.string(),
     title: z.string(),
     price: z.number(),
-    status: z.nativeEnum(ProductStatus),
+    status: z.nativeEnum(ProductStatus).default(ProductStatus.SALE),
     userId: z.string(),
     quantity: z.number().optional(),
   })
