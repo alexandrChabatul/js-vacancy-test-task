@@ -39,7 +39,14 @@ const Products: NextPage = () => {
             </Text>
           </Paper>
           {user?.products.map((product) => (
-            <CardItem product={product} type="account" maw={271} h={266} hImage={174} />
+            <CardItem
+              product={product}
+              type="account"
+              maw={271}
+              h={266}
+              hImage={174}
+              key={product._id}
+            />
           ))}
         </Group>
       </Stack>
