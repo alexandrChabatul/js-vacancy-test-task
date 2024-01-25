@@ -9,6 +9,6 @@ export type PriceData = {
 };
 
 export type CheckoutItem = {
-  price_date: PriceData;
+  price_data: PriceData;
   quantity: number;
 };

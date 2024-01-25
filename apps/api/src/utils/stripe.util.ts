@@ -2,7 +2,7 @@ import { CheckoutItem, Product } from 'types';
 
 export const mapProductToCheckoutItem = (product: Product): CheckoutItem => {
   return {
-    price_date: {
+    price_data: {
       product_data: {
         name: product.title,
       },
