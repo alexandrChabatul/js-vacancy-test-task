@@ -7,6 +7,7 @@ import { productSchema } from './product.schema';
 export const paymentSchema = dbSchema
   .extend({
     userId: z.string(),
+    sessionId: z.string(),
     status: z.nativeEnum(PaymentStatus),
     products: z.array(productSchema),
   })

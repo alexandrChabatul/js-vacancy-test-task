@@ -58,6 +58,13 @@ const removeFromCart = (userId: string, productId: string) => {
   }));
 };
 
+const removeProductsFromCart = (userId: string, products: Product[]) => {
+  const productsIds = products.map((p) => p._id);
+  return service.updateOne({ _id: userId }, ({ cart }) => ({
+    cart: cart.filter((cartItem) => !productsIds.includes(cartItem._id)),
+  }));
+};
+
 const addToCart = (userId: string, product: Product) => {
   return service.updateOne({ _id: userId }, ({ cart }) => ({
     cart: [...cart, { ...product, quantity: 1 }],
@@ -75,4 +82,5 @@ export default Object.assign(service, {
   increaseQuantity,
   addToCart,
   removeFromCart,
+  removeProductsFromCart,
 });

@@ -1,4 +1,4 @@
-import { Payment, Product } from 'types';
+import { Payment, PaymentStatus, Product, User } from 'types';
 import { paymentSchema } from 'schemas';
 import { DATABASE_DOCUMENTS } from 'app-constants';
 
@@ -11,10 +11,11 @@ const service = db.createService<Payment>(DATABASE_DOCUMENTS.PAYMENTS, {
   schemaValidator: (obj) => paymentSchema.parseAsync(obj),
 });
 
-const createPaymentSession = (products: Product[]) => {
+const createPaymentSession = (products: Product[], user: User) => {
   const items = products.map(mapProductToCheckoutItem);
   return stripeClient.checkout.sessions.create({
     payment_method_types: ['card'],
+    customer_email: user.email,
     mode: 'payment',
     line_items: items,
     success_url: `${config.WEB_URL}/payment/succeed`,
@@ -22,6 +23,11 @@ const createPaymentSession = (products: Product[]) => {
   });
 };
 
+const updatePaymentStatusBySessionId = async (id: string, status: PaymentStatus) => {
+  service.updateOne({ sessionId: id }, () => ({ status }));
+};
+
 export default Object.assign(service, {
   createPaymentSession,
+  updatePaymentStatusBySessionId,
 });
