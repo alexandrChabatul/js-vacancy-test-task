@@ -1,9 +1,9 @@
 import { Button, Image, Stack, Text } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
+import { RoutePath } from 'routes';
 
 import classes from './index.module.css';
-import { RoutePath } from '../../../../routes';
 
 const EmptyCart: FC = () => {
   const router = useRouter();
@@ -12,7 +12,7 @@ const EmptyCart: FC = () => {
   };
   return (
     <Stack align="center" gap="lg">
-      <Image src="images/empty-cart.png" h={206} w={206} />
+      <Image src="/images/empty-cart.png" h={206} w={206} />
       <Text fw="bold" fz="xl">
         Oops, there&apos;s nothing here yet!
       </Text>
