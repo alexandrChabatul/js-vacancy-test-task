@@ -10,7 +10,7 @@ const productsService = database.createService<Product>(DATABASE_DOCUMENTS.PRODU
   schemaValidator: (obj) => productSchema.parseAsync(obj),
 });
 
-describe('User service', () => {
+describe('Product service', () => {
   beforeAll(async () => {
     await database.connect();
   });

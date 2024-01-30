@@ -35,7 +35,7 @@ const UnauthorizedLayout: FC<UnauthorizedLayoutProps> = ({ children }) => (
             src="/images/ItemCard-1.png"
             className={classNames(classes.previewItemImage, classes.previewItemImageLeft)}
           />
-          <Image alt="Shopy Page" src="/s/Shop.png" className={classes.previewShopImage} />
+          <Image alt="Shopy Page" src="/images/Shop.png" className={classes.previewShopImage} />
           <Image
             alt="Shopy Item"
             src="/images/ItemCard-2.png"

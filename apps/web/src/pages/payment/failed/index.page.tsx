@@ -1,3 +1,4 @@
+import React from 'react';
 import { Button, Image, Stack, Text } from '@mantine/core';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';

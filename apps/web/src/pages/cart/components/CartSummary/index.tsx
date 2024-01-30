@@ -1,6 +1,7 @@
 import { Divider, Group, Paper, Stack, Title, Text, Button } from '@mantine/core';
 import { FC, useMemo } from 'react';
 import { Product } from 'types';
+import { paymentApi } from 'resources/payment';
 
 import classes from './index.module.css';
 
@@ -13,8 +14,13 @@ const CartSummary: FC<CartSummaryInterface> = ({ items }) => {
     () => items.reduce((acc, el) => acc + el.price * (el.quantity || 0), 0),
     [items]
   );
+  const { mutate: createCheckoutSession, isLoading } = paymentApi.useCreateStripeSession<{
+    products: Product[];
+  }>();
 
-  const handleCheckout = () => {};
+  const handleCheckout = () => {
+    createCheckoutSession({ products: items });
+  };
 
   return (
     <Paper maw={315} className={classes.summaryWrapper}>
@@ -34,7 +40,9 @@ const CartSummary: FC<CartSummaryInterface> = ({ items }) => {
             })}
           </Text>
         </Group>
-        <Button onClick={handleCheckout}>Proceed to Checkout</Button>
+        <Button onClick={handleCheckout} disabled={isLoading} loading={isLoading}>
+          Proceed to Checkout
+        </Button>
       </Stack>
     </Paper>
   );
