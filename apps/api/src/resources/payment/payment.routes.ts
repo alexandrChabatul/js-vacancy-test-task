@@ -1,10 +1,11 @@
 import { routeUtil } from 'utils';
 
-import getPaymentUrl from './actions/get-payment-url';
+import createPaymentUrl from './actions/create-payment-url';
+import getPaymentsHistory from './actions/get-payments-history';
 
 const publicRoutes = routeUtil.getRoutes([]);
 
-const privateRoutes = routeUtil.getRoutes([getPaymentUrl]);
+const privateRoutes = routeUtil.getRoutes([createPaymentUrl, getPaymentsHistory]);
 
 const adminRoutes = routeUtil.getRoutes([]);
 

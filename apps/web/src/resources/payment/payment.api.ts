@@ -1,6 +1,7 @@
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 
 import { apiService } from 'services';
+import { Product } from 'types';
 
 export function useCreateStripeSession<T>() {
   const createStripeSession = (data: T) => apiService.post('/payments/create-session', data);
@@ -14,4 +15,14 @@ export function useCreateStripeSession<T>() {
       window.location.href = data.url;
     },
   });
+}
+
+export function useGetPaymentsHistory() {
+  const getPaymentHistory = () => apiService.get('/payments/history');
+
+  interface GetPaymentsHistoryResponse {
+    products: Product[];
+  }
+
+  return useQuery<GetPaymentsHistoryResponse>(['history'], getPaymentHistory);
 }

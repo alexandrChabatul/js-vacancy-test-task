@@ -27,7 +27,16 @@ const updatePaymentStatusBySessionId = async (id: string, status: PaymentStatus)
   service.updateOne({ sessionId: id }, () => ({ status }));
 };
 
+const getHistory = async (userId: string) => {
+  const payments = await service.find({ userId });
+  return payments.results.reduce((acc: Product[], payment) => {
+    acc.push(...payment.products);
+    return acc;
+  }, []);
+};
+
 export default Object.assign(service, {
   createPaymentSession,
   updatePaymentStatusBySessionId,
+  getHistory,
 });
