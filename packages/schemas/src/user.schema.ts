@@ -3,6 +3,11 @@ import { z } from 'zod';
 import dbSchema from './db.schema';
 import { productSchema } from './product.schema';
 
+export const cartItemSchema = z.object({
+  product: productSchema,
+  quantity: z.number().default(1),
+});
+
 export const userSchema = dbSchema
   .extend({
     email: z.string(),
@@ -23,6 +28,6 @@ export const userSchema = dbSchema
 
     lastRequest: z.date().optional(),
     products: z.array(productSchema),
-    cart: z.array(productSchema).default([]),
+    cart: z.array(cartItemSchema).default([]),
   })
   .strict();
