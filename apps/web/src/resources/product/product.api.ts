@@ -38,3 +38,15 @@ export function useList<T>(params: T) {
 
   return useQuery<ProductsListResponse>(['products', params], list);
 }
+
+export function useMyList<T>(params: T) {
+  const myList = () => apiService.get('/products/my', params);
+
+  interface ProductsListResponse {
+    count: number;
+    items: Product[];
+    totalPages: number;
+  }
+
+  return useQuery<ProductsListResponse>(['my-products', params], myList);
+}

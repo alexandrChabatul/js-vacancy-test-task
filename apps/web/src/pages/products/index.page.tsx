@@ -3,14 +3,14 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import { IconPlus } from '@tabler/icons-react';
 import Link from 'next/link';
-import { accountApi } from 'resources/account';
-import { RoutePath } from '../../routes';
+import { RoutePath } from 'routes';
+import CardItem from 'components/CardItem';
+import { productApi } from 'resources/product';
 
 import classes from './index.module.css';
-import CardItem from '../../components/CardItem';
 
 const Products: NextPage = () => {
-  const { data: user } = accountApi.useGet();
+  const { data } = productApi.useMyList({});
 
   return (
     <>
@@ -38,7 +38,7 @@ const Products: NextPage = () => {
               New Product
             </Text>
           </Paper>
-          {user?.products.map((product) => (
+          {data?.items.map((product) => (
             <CardItem
               product={product}
               type="account"

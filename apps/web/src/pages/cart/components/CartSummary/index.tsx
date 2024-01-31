@@ -1,21 +1,21 @@
 import { Divider, Group, Paper, Stack, Title, Text, Button } from '@mantine/core';
 import { FC, useMemo } from 'react';
-import { Product } from 'types';
+import { PopulatedCartItem } from 'types';
 import { paymentApi } from 'resources/payment';
 
 import classes from './index.module.css';
 
 interface CartSummaryInterface {
-  items: Product[];
+  items: PopulatedCartItem[];
 }
 
 const CartSummary: FC<CartSummaryInterface> = ({ items }) => {
   const summary = useMemo(
-    () => items.reduce((acc, el) => acc + el.price * (el.quantity || 0), 0),
+    () => items.reduce((acc, item) => acc + item.product.price * (item.quantity || 0), 0),
     [items]
   );
   const { mutate: createCheckoutSession, isLoading } = paymentApi.useCreateStripeSession<{
-    products: Product[];
+    products: PopulatedCartItem[];
   }>();
 
   const handleCheckout = () => {

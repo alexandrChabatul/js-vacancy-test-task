@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from 'react-query';
 
 import { apiService } from 'services';
-import { Product } from 'types';
+import { PopulatedHistoryItem } from 'types';
 
 export function useCreateStripeSession<T>() {
   const createStripeSession = (data: T) => apiService.post('/payments/create-session', data);
@@ -21,7 +21,7 @@ export function useGetPaymentsHistory() {
   const getPaymentHistory = () => apiService.get('/payments/history');
 
   interface GetPaymentsHistoryResponse {
-    products: Product[];
+    products: PopulatedHistoryItem[];
   }
 
   return useQuery<GetPaymentsHistoryResponse>(['history'], getPaymentHistory);

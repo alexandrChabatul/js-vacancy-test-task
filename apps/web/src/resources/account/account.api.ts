@@ -1,10 +1,10 @@
 import { useMutation, useQuery } from 'react-query';
 
-import { User } from 'types';
-
 import { apiService } from 'services';
 
 import queryClient from 'query-client';
+
+import { User } from 'types';
 
 export function useSignIn<T>() {
   const signIn = (data: T) => apiService.post('/account/sign-in', data);
@@ -54,7 +54,7 @@ export function useResendEmail<T>() {
   return useMutation<{}, unknown, T>(resendEmail);
 }
 
-export function useGet(options? : {}) {
+export function useGet(options?: {}) {
   const get = () => apiService.get('/account');
 
   return useQuery<User>(['account'], get, options);

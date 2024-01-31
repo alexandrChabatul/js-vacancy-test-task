@@ -1,5 +1,6 @@
 export type ProductsData = {
   name: string;
+  images: string[];
 };
 
 export type PriceData = {
