@@ -4,7 +4,7 @@ import dbSchema from './db.schema';
 import { productSchema } from './product.schema';
 
 export const cartItemSchema = z.object({
-  product: productSchema,
+  product: z.string(),
   quantity: z.number().default(1),
 });
 
