@@ -1,10 +1,11 @@
 import _ from 'lodash';
 
-import { CartItem, Product, User } from 'types';
+import { CartItem, User } from 'types';
 import { userSchema } from 'schemas';
 import { DATABASE_DOCUMENTS } from 'app-constants';
 
 import db from 'db';
+import { productService } from '../product';
 
 const service = db.createService<User>(DATABASE_DOCUMENTS.USERS, {
   schemaValidator: (obj) => userSchema.parseAsync(obj),
@@ -49,10 +50,9 @@ const removeFromCart = (userId: string, productId: string) => {
   }));
 };
 
-const removeProductsFromCart = (userId: string, products: Product[]) => {
-  const productsIds = products.map((p) => p._id);
+const removeProductsFromCart = (userId: string, productIds: string[]) => {
   return service.updateOne({ _id: userId }, ({ cart }) => ({
-    cart: cart.filter((cartItem) => !productsIds.includes(cartItem.product)),
+    cart: cart.filter((cartItem) => !productIds.includes(cartItem.product)),
   }));
 };
 
@@ -60,6 +60,14 @@ const addToCart = (userId: string, productId: string) => {
   return service.updateOne({ _id: userId }, ({ cart }) => ({
     cart: [...cart, { product: productId, quantity: 1 }],
   }));
+};
+
+const getCart = (user: User) => {
+  return user.cart.map((item) => {
+    return productService.findOne({ _id: item.product }).then((product) => {
+      return { ...item, product };
+    });
+  });
 };
 
 const privateFields = ['passwordHash', 'signupToken', 'resetPasswordToken'];
@@ -74,4 +82,5 @@ export default Object.assign(service, {
   addToCart,
   removeFromCart,
   removeProductsFromCart,
+  getCart,
 });

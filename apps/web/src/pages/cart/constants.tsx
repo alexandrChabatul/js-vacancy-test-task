@@ -1,10 +1,10 @@
 import { ColumnDef } from '@tanstack/react-table';
-import { Product } from 'types';
+import { PopulatedCartItem, PopulatedHistoryItem } from 'types';
 import { ActionIcon, Group, Image, Text, UnstyledButton } from '@mantine/core';
 import { IconMinus, IconPlus, IconX } from '@tabler/icons-react';
 import { userApi } from 'resources/user';
 
-export const cartColumns: ColumnDef<Product>[] = [
+export const cartColumns: ColumnDef<PopulatedCartItem>[] = [
   {
     id: 'cart-column-1',
     accessorKey: 'photoUrl',
@@ -12,9 +12,9 @@ export const cartColumns: ColumnDef<Product>[] = [
     size: 450,
     cell: ({ row }) => (
       <Group>
-        <Image src={row.original.photoUrl} w={80} h={80} radius={8} />
+        <Image src={row.original.product.photoUrl} w={80} h={80} radius={8} />
         <Text style={{ textAlign: 'left' }} fw="bold">
-          {row.original.title}
+          {row.original.product.title}
         </Text>
       </Group>
     ),
@@ -24,9 +24,9 @@ export const cartColumns: ColumnDef<Product>[] = [
     accessorKey: 'price',
     header: 'Unit price',
     size: 120,
-    cell: (info) => (
+    cell: ({ row }) => (
       <Text>
-        {info.getValue<number>().toLocaleString?.('en-US', {
+        {row.original.product.price.toLocaleString?.('en-US', {
           style: 'currency',
           currency: 'USD',
           maximumFractionDigits: 2,
@@ -44,10 +44,10 @@ export const cartColumns: ColumnDef<Product>[] = [
       const { mutate: increaseCount } = userApi.useIncreaseItemCount<{ productId: string }>();
       const { mutate: decreaseCount } = userApi.useDecreaseItemCount<{ productId: string }>();
       const handleIncreaseClick = () => {
-        increaseCount({ productId: row.original._id });
+        increaseCount({ productId: row.original.product._id });
       };
       const handleDecreaseClick = () => {
-        decreaseCount({ productId: row.original._id });
+        decreaseCount({ productId: row.original.product._id });
       };
       return (
         <Group w="100%" justify="end" wrap="nowrap">
@@ -79,7 +79,7 @@ export const cartColumns: ColumnDef<Product>[] = [
     cell: ({ row }) => {
       const { mutate: deleteFromCart } = userApi.useRemoveFromCart();
       const handleRemoveClick = () => {
-        deleteFromCart(row.original._id);
+        deleteFromCart(row.original.product._id);
       };
       return (
         <UnstyledButton
@@ -95,7 +95,7 @@ export const cartColumns: ColumnDef<Product>[] = [
     },
   },
 ];
-export const historyColumns: ColumnDef<Product>[] = [
+export const historyColumns: ColumnDef<PopulatedHistoryItem>[] = [
   {
     id: 'cart-column-1',
     accessorKey: 'photoUrl',
@@ -103,9 +103,9 @@ export const historyColumns: ColumnDef<Product>[] = [
     size: 450,
     cell: ({ row }) => (
       <Group>
-        <Image src={row.original.photoUrl} w={80} h={80} radius={8} />
+        <Image src={row.original.product.photoUrl} w={80} h={80} radius={8} />
         <Text style={{ textAlign: 'left' }} fw="bold">
-          {row.original.title}
+          {row.original.product.title}
         </Text>
       </Group>
     ),
@@ -115,9 +115,9 @@ export const historyColumns: ColumnDef<Product>[] = [
     accessorKey: 'price',
     header: 'Unit price',
     size: 120,
-    cell: (info) => (
+    cell: ({ row }) => (
       <Text>
-        {info.getValue<number>().toLocaleString?.('en-US', {
+        {row.original.product.price.toLocaleString?.('en-US', {
           style: 'currency',
           currency: 'USD',
           maximumFractionDigits: 2,
@@ -132,9 +132,7 @@ export const historyColumns: ColumnDef<Product>[] = [
     header: 'Date',
     size: 120,
     cell: ({ row }) => (
-      <Text>
-        {row.original.createdOn ? new Date(row.original.createdOn).toLocaleDateString() : ''}
-      </Text>
+      <Text>{row.original.paidAt ? new Date(row.original.paidAt).toLocaleDateString() : ''}</Text>
     ),
   },
 ];

@@ -8,6 +8,11 @@ export const cartItemSchema = z.object({
   quantity: z.number().default(1),
 });
 
+export const populatedCartItemSchema = z.object({
+  product: productSchema,
+  quantity: z.number().default(1),
+});
+
 export const userSchema = dbSchema
   .extend({
     email: z.string(),

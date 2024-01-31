@@ -1,19 +1,21 @@
 import { z } from 'zod';
 
-import { AppKoaContext, AppRouter, PaymentStatus, Product } from 'types';
+import { AppKoaContext, AppRouter, PaymentStatus, PopulatedCartItem } from 'types';
 
 import { validateMiddleware } from 'middlewares';
 import { analyticsService } from 'services';
 import { productSchema } from 'schemas';
 import { paymentService } from 'resources/payment';
-import { userService } from '../../user';
 
 const schema = z.object({
-  products: z.array(productSchema),
+  products: z.array(z.object({
+      product: productSchema,
+      quantity: z.number(),
+    })),
 });
 
 interface ValidatedData extends z.infer<typeof schema> {
-  products: Product[];
+  products: PopulatedCartItem[];
 }
 
 async function handler(ctx: AppKoaContext<ValidatedData>) {
@@ -28,8 +30,6 @@ async function handler(ctx: AppKoaContext<ValidatedData>) {
     products,
     status: PaymentStatus.PENDING,
   });
-
-  await userService.removeProductsFromCart(user._id, products);
 
   analyticsService.track('Create payment session', {
     userId: user._id,

@@ -9,7 +9,7 @@ interface HandleWebhookResponse {
 
 const handleCheckoutSessionCompleted = async (event: Stripe.Event): Promise<HandleWebhookResponse> => {
   const data = (event as Stripe.CheckoutSessionCompletedEvent).data;
-  await paymentService.updatePaymentStatusBySessionId(data.object.id, PaymentStatus.SUCCESS);
+  await paymentService.handleSuccessPayment(data.object.id, data.object.created);
   return { sessionId: data.object.id, type: event.type };
 };
 

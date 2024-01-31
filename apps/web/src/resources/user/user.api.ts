@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from 'react-query';
 
-import { User } from 'types';
+import { PopulatedCartItem, User } from 'types';
 
 import { apiService } from 'services';
 import queryClient from '../../query-client';
@@ -55,4 +55,14 @@ export function useDecreaseItemCount<T>() {
       queryClient.setQueryData(['account'], data);
     },
   });
+}
+
+export function useGetCart(options?: {}) {
+  const get = () => apiService.get('/users/cart');
+
+  interface CartResponse {
+    cart: PopulatedCartItem[];
+  }
+
+  return useQuery<CartResponse>(['cart'], get, options);
 }

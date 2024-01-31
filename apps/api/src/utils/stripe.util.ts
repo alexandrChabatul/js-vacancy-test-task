@@ -1,15 +1,16 @@
-import { CheckoutItem, Product } from 'types';
+import { CheckoutItem, PopulatedCartItem } from 'types';
 
-export const mapProductToCheckoutItem = (product: Product): CheckoutItem => {
+export const mapProductToCheckoutItem = (item: PopulatedCartItem): CheckoutItem => {
   return {
     price_data: {
       product_data: {
-        name: product.title,
+        name: item.product.title,
+        images: [item.product.photoUrl],
       },
       currency: 'usd',
-      unit_amount: product.price * 100,
+      unit_amount: item.product.price * 100,
     },
-    quantity: product.quantity || 1,
+    quantity: item.quantity || 1,
   };
 };
 

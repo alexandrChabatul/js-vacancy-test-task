@@ -34,9 +34,9 @@ async function handler(ctx: AppKoaContext<ValidatedData>) {
 
   let updatedUser: User | null;
 
-  const isInCart = user.cart.some((item) => item._id === product._id);
-  if (isInCart) updatedUser = await userService.increaseQuantity(user._id, product);
-  else updatedUser = await userService.addToCart(user._id, product);
+  const isInCart = user.cart.some((item) => item.product === product._id);
+  if (isInCart) updatedUser = await userService.increaseQuantity(user._id, product._id);
+  else updatedUser = await userService.addToCart(user._id, product._id);
 
   analyticsService.track('Add to cart', {
     productId: product._id,
