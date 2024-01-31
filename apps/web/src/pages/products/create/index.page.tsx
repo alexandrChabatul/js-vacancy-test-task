@@ -49,7 +49,7 @@ const CreateProduct: NextPage = () => {
   const create = (data: Partial<Product>) =>
     createProduct(data, {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['products'] });
+        queryClient.invalidateQueries({ queryKey: ['my-products'] });
         showNotification({
           title: 'Success',
           message: 'The product was successfully created',

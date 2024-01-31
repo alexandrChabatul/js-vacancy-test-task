@@ -32,7 +32,6 @@ export const userSchema = dbSchema
       .optional(),
 
     lastRequest: z.date().optional(),
-    products: z.array(productSchema),
     cart: z.array(cartItemSchema).default([]),
   })
   .strict();
