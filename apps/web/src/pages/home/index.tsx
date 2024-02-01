@@ -154,13 +154,15 @@ const Home: NextPage = () => {
           )}
         </Stack>
       </Group>
-      <Pagination
-        className={classes.pagination}
-        total={data?.totalPages || 0}
-        onChange={(v) => {
-          setParams({ ...params, page: v });
-        }}
-      />
+      {data?.count && (
+        <Pagination
+          className={classes.pagination}
+          total={data?.totalPages || 0}
+          onChange={(v) => {
+            setParams({ ...params, page: v });
+          }}
+        />
+      )}
     </Stack>
   );
 };

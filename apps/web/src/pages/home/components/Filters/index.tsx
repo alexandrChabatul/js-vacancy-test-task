@@ -1,5 +1,5 @@
 import { Dispatch, FC, SetStateAction, memo, useEffect } from 'react';
-import { CloseIcon, Group, NumberInput, Paper, Stack, Text, Title } from '@mantine/core';
+import { CloseIcon, Group, NumberInput, Paper, Stack, Text, Title, rem } from '@mantine/core';
 import { useDebouncedValue, useInputState } from '@mantine/hooks';
 import { ProductsListParams } from '../../types/product-list-params.interface';
 
@@ -70,6 +70,7 @@ const Filters: FC<FiltersProps> = ({ params, setParams }) => {
               decimalScale={2}
               value={from}
               onChange={(v) => setFrom(+v === 0 ? undefined : +v)}
+              styles={{ input: { paddingLeft: rem(45) } }}
             />
             <NumberInput
               maw={300}

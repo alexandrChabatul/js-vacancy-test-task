@@ -104,7 +104,6 @@ const CreateProduct: NextPage = () => {
             onChange={() => {}}
             error={errors.price?.message}
             decimalScale={2}
-            fixedDecimalScale
             hideControls
           />
           <Button

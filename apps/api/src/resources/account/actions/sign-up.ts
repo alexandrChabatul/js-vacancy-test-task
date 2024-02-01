@@ -50,7 +50,6 @@ async function handler(ctx: AppKoaContext<ValidatedData>) {
     passwordHash: hash.toString(),
     isEmailVerified: false,
     signupToken,
-    products: [],
   });
   console.log(signupToken);
 
