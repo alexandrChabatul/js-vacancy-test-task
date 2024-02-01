@@ -32,7 +32,7 @@ type ValidatedData = z.infer<typeof schema>;
 
 async function handler(ctx: AppKoaContext<ValidatedData>) {
   const { perPage, page, sort, searchValue, filter } = ctx.validatedData;
-  console.log(perPage, page, sort, searchValue, filter);
+  await new Promise((resolve) => setTimeout(resolve, 50000));
 
   const validatedSearch = searchValue.split('\\').join('\\\\').split('.').join('\\.');
   const regExp = new RegExp(validatedSearch, 'gi');

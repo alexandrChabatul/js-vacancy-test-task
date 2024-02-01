@@ -3,17 +3,14 @@
   pointer-events: none;
 }
 
-.filtersWrapper {
-  flex-grow: 1;
-  max-width: 315px;
-  position: sticky;
-  top: 106px;
-}
-
 .searchAndProducts {
   flex-grow: 1;
 }
 
 .pagination {
   align-self: center;
+}
+
+.itemGrid {
+  justify-items: center;
 }
