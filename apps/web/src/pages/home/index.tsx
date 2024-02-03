@@ -165,7 +165,7 @@ const Home: NextPage = () => {
                 ))}
               </>
             )}
-            {data?.items.length ? (
+            {!!data?.items.length && (
               <>
                 {data.items.map((product) => (
                   <CardItem
@@ -179,14 +179,15 @@ const Home: NextPage = () => {
                   />
                 ))}
               </>
-            ) : (
-              <Container p={75}>
-                <Text size="xl" c="gray">
-                  No results found, try to adjust your search.
-                </Text>
-              </Container>
             )}
           </SimpleGrid>
+          {!isListLoading && !data?.items.length && (
+            <Container p={75}>
+              <Text size="xl" c="gray">
+                No results found, try to adjust your search.
+              </Text>
+            </Container>
+          )}
         </Stack>
       </Flex>
       {data && data.totalPages > 1 && (
