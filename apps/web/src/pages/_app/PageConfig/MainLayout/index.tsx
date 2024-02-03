@@ -1,5 +1,5 @@
 import { FC, ReactElement } from 'react';
-import { AppShell } from '@mantine/core';
+import { AppShell, Container } from '@mantine/core';
 
 import Header from './Header';
 
@@ -19,7 +19,9 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => (
   >
     <Header />
     <AppShell.Main w="100vw">
-      <div className={classes.mainWrapper}>{children}</div>
+      <Container px={{ base: 10, sm: 15, md: 48 }} m={0} className={classes.mainWrapper}>
+        {children}
+      </Container>
     </AppShell.Main>
   </AppShell>
 );

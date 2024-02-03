@@ -23,7 +23,12 @@ const CartSummary: FC<CartSummaryInterface> = ({ items }) => {
   };
 
   return (
-    <Paper maw={315} className={classes.summaryWrapper}>
+    <Paper
+      maw={{ base: '100%', sm: 315 }}
+      className={classes.summaryWrapper}
+      pos={{ base: 'relative', sm: 'sticky' }}
+      top={{ base: '0', sm: '106px' }}
+    >
       <Stack gap="xl">
         <Title order={4} fz={20}>
           Summary

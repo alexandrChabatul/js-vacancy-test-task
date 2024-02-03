@@ -19,7 +19,12 @@ const schema = z.object({
   title: z.string().min(1, 'Title is required').max(100),
   price: z
     .union([z.number(), z.string()])
-    .pipe(z.coerce.number().gte(0.01, 'Price is required and should be positive number')),
+    .pipe(
+      z.coerce
+        .number()
+        .positive('Price is required and should be positive number')
+        .lte(999999, 'Price should be less than 999999')
+    ),
   file: z.instanceof(File, { message: 'Photo is required.' }),
 });
 
@@ -104,7 +109,6 @@ const CreateProduct: NextPage = () => {
             onChange={() => {}}
             error={errors.price?.message}
             decimalScale={2}
-            fixedDecimalScale
             hideControls
           />
           <Button

@@ -1,3 +1,4 @@
+import range from 'lodash/range';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import Head from 'next/head';
 import { NextPage } from 'next';
@@ -12,6 +13,8 @@ import {
   Pill,
   Container,
   Pagination,
+  Skeleton,
+  SimpleGrid,
 } from '@mantine/core';
 import { useDebouncedValue, useInputState } from '@mantine/hooks';
 import { IconSearch, IconX, IconChevronDown, IconArrowsDownUp } from '@tabler/icons-react';
@@ -71,11 +74,28 @@ const Home: NextPage = () => {
       <Head>
         <title>Shopy</title>
       </Head>
-      <Group gap="lg" align="start" wrap="nowrap" pos="relative">
-        <div className={classes.filtersWrapper}>
+      <Flex
+        gap={{ base: 'sm', md: 'lg' }}
+        align="start"
+        wrap="nowrap"
+        pos="relative"
+        direction={{ base: 'column', sm: 'row' }}
+      >
+        <Container
+          p={0}
+          w={{ base: '100%', sm: 240, md: 315 }}
+          pos={{ base: 'relative', sm: 'sticky' }}
+          top={{ base: 0, sm: '106px' }}
+          m={0}
+        >
           <Filters params={params} setParams={setParams} />
-        </div>
-        <Stack className={classes.searchAndProducts} gap="lg">
+        </Container>
+        <Stack
+          className={classes.searchAndProducts}
+          gap="lg"
+          w={{ base: '100%', sm: 'auto' }}
+          maw={1001}
+        >
           <TextInput
             w="100%"
             size="lg"
@@ -98,7 +118,7 @@ const Home: NextPage = () => {
           />
           <Stack gap="sm">
             <Group w="100%" justify="space-between">
-              <Text fw="bold">{`${data?.count} results`}</Text>
+              <Text fw="bold">{`${data?.count || 0} results`}</Text>
               <Select
                 w={175}
                 variant="unstyled"
@@ -131,21 +151,37 @@ const Home: NextPage = () => {
               </Pill.Group>
             )}
           </Stack>
-          {data?.items.length ? (
-            <Group gap="1.5rem">
-              {data.items.map((product) => (
-                <CardItem
-                  key={product._id}
-                  product={product}
-                  type="store"
-                  maw={320}
-                  miw={240}
-                  h={374}
-                  hImage={218}
-                />
-              ))}
-            </Group>
-          ) : (
+          <SimpleGrid cols={{ base: 1, xs: 2, lg: 3 }} className={classes.itemGrid}>
+            {isListLoading && (
+              <>
+                {range(9).map((item) => (
+                  <Skeleton
+                    key={`sklton-${String(item)}`}
+                    maw={320}
+                    miw={230}
+                    h={374}
+                    radius="md"
+                  />
+                ))}
+              </>
+            )}
+            {!!data?.items.length && (
+              <>
+                {data.items.map((product) => (
+                  <CardItem
+                    key={product._id}
+                    product={product}
+                    type="store"
+                    maw={320}
+                    miw={230}
+                    h={374}
+                    hImage={218}
+                  />
+                ))}
+              </>
+            )}
+          </SimpleGrid>
+          {!isListLoading && !data?.items.length && (
             <Container p={75}>
               <Text size="xl" c="gray">
                 No results found, try to adjust your search.
@@ -153,14 +189,16 @@ const Home: NextPage = () => {
             </Container>
           )}
         </Stack>
-      </Group>
-      <Pagination
-        className={classes.pagination}
-        total={data?.totalPages || 0}
-        onChange={(v) => {
-          setParams({ ...params, page: v });
-        }}
-      />
+      </Flex>
+      {data && data.totalPages > 1 && (
+        <Pagination
+          className={classes.pagination}
+          total={data?.totalPages || 0}
+          onChange={(v) => {
+            setParams({ ...params, page: v });
+          }}
+        />
+      )}
     </Stack>
   );
 };

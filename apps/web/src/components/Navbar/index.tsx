@@ -15,9 +15,10 @@ interface NavbarProps {
   type?: 'fill' | 'text';
   px?: number;
   mb?: number | MantineSize;
+  visibleFrom?: MantineSize | undefined;
 }
 
-const Navbar: FC<NavbarProps> = ({ links, fz = 16, type = 'fill', px = 20, mb }) => {
+const Navbar: FC<NavbarProps> = ({ links, fz = 16, type = 'fill', px = 20, mb, visibleFrom }) => {
   const router = useRouter();
 
   const { data: account } = accountApi.useGet();
@@ -25,7 +26,7 @@ const Navbar: FC<NavbarProps> = ({ links, fz = 16, type = 'fill', px = 20, mb })
   if (!account) return null;
 
   return (
-    <Group gap="xl" visibleFrom="sm" mb={mb}>
+    <Group gap="xl" visibleFrom={visibleFrom} mb={mb}>
       {links.map((link) => (
         <Link type="router" key={link.label} href={link.link} style={{ textDecoration: 'none' }}>
           <Text

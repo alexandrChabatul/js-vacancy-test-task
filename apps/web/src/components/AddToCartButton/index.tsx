@@ -12,7 +12,7 @@ const AddToCartButton: FC<AddToCartProps> = ({ productId }) => {
   const { mutate: addToCart, isLoading } = userApi.useAddToCart<{ productId: string }>();
 
   const isInCart = useMemo(
-    () => user?.cart?.some((item) => item._id === productId),
+    () => user?.cart?.some((item) => item.product === productId),
     [user, productId]
   );
 

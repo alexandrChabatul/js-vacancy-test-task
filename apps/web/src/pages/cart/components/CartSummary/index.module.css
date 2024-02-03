@@ -1,6 +1,9 @@
 .summaryWrapper {
   flex-grow: 1;
-  position: sticky;
   top: 106px;
-  transform: translateY(-60px);
+  height: min-content;
+  transform: translateY(0);
+  @media (min-width: 768px) {
+    transform: translateY(-60px);
+  }
 }

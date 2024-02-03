@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { AppKoaContext, Next, AppRouter, Product } from 'types';
+import { AppKoaContext, Next, AppRouter } from 'types';
 
 import { userService } from 'resources/user';
 
@@ -12,29 +12,27 @@ const schema = z.object({
 });
 
 interface ValidatedData extends z.infer<typeof schema> {
-  product: Product;
+  productId: string;
 }
 
 async function validator(ctx: AppKoaContext<ValidatedData>, next: Next) {
   const { productId } = ctx.validatedData;
   const { user } = ctx.state;
-  const product = user.cart.find((i) => i._id == productId);
+  const product = user.cart.find((i) => i.product == productId);
 
   ctx.assertError(product, 'Product should be in cart.');
-
-  ctx.validatedData.product = product;
 
   await next();
 }
 
 async function handler(ctx: AppKoaContext<ValidatedData>) {
-  const { product } = ctx.validatedData;
+  const { productId } = ctx.validatedData;
   const { user } = ctx.state;
 
-  const updatedUser = await userService.increaseQuantity(user._id, product);
+  const updatedUser = await userService.increaseQuantity(user._id, productId);
 
   analyticsService.track('Increase cart value', {
-    productId: product._id,
+    productId,
     userId: user._id,
   });
 

@@ -1,6 +1,4 @@
 .input {
-  padding: var(--input-padding-y, 0) var(--_input-padding-right) var(--input-padding-y, 0)
-    calc(var(--_input-padding-left, 0) + 9px);
   --_input-size: 0;
 
   &::placeholder,
