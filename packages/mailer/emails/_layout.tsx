@@ -13,7 +13,7 @@ interface LayoutProps {
   previewText?: string;
 }
 
-const Layout:FC<LayoutProps> = ({ children, previewText }) => (
+const Layout: FC<LayoutProps> = ({ children, previewText }) => (
   <Html>
     <Head />
 

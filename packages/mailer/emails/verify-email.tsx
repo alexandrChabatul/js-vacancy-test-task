@@ -13,10 +13,10 @@ export const VerifyEmail: FC<VerifyEmailProps> = ({
   email = 'John@gmail.com',
   href = 'https://ship.paralect.com',
 }) => (
-  <Layout previewText="Welcome on board the Ship!">
+  <Layout previewText="Welcome on board the Shopy!">
     <Text>Dear {email},</Text>
 
-    <Text>Welcome to Ship! We are excited to have you on board.</Text>
+    <Text>Welcome to Shopy! We are excited to have you on board.</Text>
 
     <Text>
       Before we get started, we just need to verify your email address. This is to ensure that you
