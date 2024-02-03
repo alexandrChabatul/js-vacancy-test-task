@@ -3,7 +3,12 @@ import sendgrid from '@sendgrid/mail';
 
 import { renderEmailHtml, Template } from 'mailer';
 
-import { From, EmailServiceConstructorProps, SendTemplateParams, SendSendgridTemplateParams } from './email.types';
+import {
+  From,
+  EmailServiceConstructorProps,
+  SendTemplateParams,
+  SendSendgridTemplateParams,
+} from './email.types';
 
 class EmailService {
   apiKey: string | undefined;
@@ -30,7 +35,12 @@ class EmailService {
     });
   }
 
-  async sendSendgridTemplate({ to, subject, templateId, dynamicTemplateData }: SendSendgridTemplateParams) {
+  async sendSendgridTemplate({
+    to,
+    subject,
+    templateId,
+    dynamicTemplateData,
+  }: SendSendgridTemplateParams) {
     if (!this.apiKey) return null;
 
     return sendgrid.send({
@@ -43,11 +53,10 @@ class EmailService {
   }
 }
 
-
 export default new EmailService({
   apiKey: config.SENDGRID_API_KEY,
   from: {
-    email: 'notifications@ship.com',
+    email: config.SENDGRID_SENDER || 'notification@ship.com',
     name: 'Ship',
   },
 });
