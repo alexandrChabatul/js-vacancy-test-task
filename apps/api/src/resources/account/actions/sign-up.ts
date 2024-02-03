@@ -51,7 +51,6 @@ async function handler(ctx: AppKoaContext<ValidatedData>) {
     isEmailVerified: false,
     signupToken,
   });
-  console.log(signupToken);
 
   analyticsService.track('New user created', {
     email,
