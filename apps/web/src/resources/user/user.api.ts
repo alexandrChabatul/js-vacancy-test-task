@@ -23,6 +23,7 @@ export function useAddToCart<T>() {
   return useMutation<User, unknown, T>(addToCart, {
     onSuccess: (data) => {
       queryClient.setQueryData(['account'], data);
+      queryClient.invalidateQueries(['cart']);
     },
   });
 }
@@ -33,6 +34,7 @@ export function useRemoveFromCart() {
   return useMutation<User, unknown, string>(removeFromCart, {
     onSuccess: (data) => {
       queryClient.setQueryData(['account'], data);
+      queryClient.invalidateQueries(['cart']);
     },
   });
 }
@@ -43,6 +45,7 @@ export function useIncreaseItemCount<T>() {
   return useMutation<User, unknown, T>(increaseItemCount, {
     onSuccess: (data) => {
       queryClient.setQueryData(['account'], data);
+      queryClient.invalidateQueries(['cart']);
     },
   });
 }
@@ -53,6 +56,7 @@ export function useDecreaseItemCount<T>() {
   return useMutation<User, unknown, T>(decreaseItemCount, {
     onSuccess: (data) => {
       queryClient.setQueryData(['account'], data);
+      queryClient.invalidateQueries(['cart']);
     },
   });
 }
