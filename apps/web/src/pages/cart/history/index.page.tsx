@@ -8,25 +8,29 @@ import { historyColumns } from '../constants';
 import EmptyCart from '../components/EmptyCart';
 
 import classes from './index.module.css';
+import CartLoadingSkeleton from '../components/CartLoadingSkeleton';
 
 // Todo: change to history from cart
 const History: NextPage = () => {
-  const { data } = paymentApi.useGetPaymentsHistory();
+  const { data, isLoading } = paymentApi.useGetPaymentsHistory();
   return (
     <CartLayout>
-      {data?.products.length ? (
-        <Container maw={950} p={0} m={0} className={classes.cartTableWrapper}>
-          <Table
-            columns={historyColumns}
-            data={data.products}
-            perPage={5}
-            horizontalSpacing={0}
-            verticalSpacing={0}
-          />
-        </Container>
-      ) : (
-        <EmptyCart />
-      )}
+      <>
+        {isLoading && <CartLoadingSkeleton />}
+        {data?.products.length ? (
+          <Container maw={950} p={0} m={0} className={classes.cartTableWrapper}>
+            <Table
+              columns={historyColumns}
+              data={data.products}
+              perPage={5}
+              horizontalSpacing={0}
+              verticalSpacing={0}
+            />
+          </Container>
+        ) : (
+          !isLoading && <EmptyCart />
+        )}
+      </>
     </CartLayout>
   );
 };

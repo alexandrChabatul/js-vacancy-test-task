@@ -30,11 +30,18 @@ const Header: FC = () => {
 
   return (
     <LayoutHeader className={classes.headerWrapper} w="100vw">
-      <Container className={classes.header} mih={72} px={48} pt={33} display="flex" fluid>
+      <Container
+        className={classes.header}
+        mih={72}
+        px={{ base: 10, sm: 15, md: 48 }}
+        pt={33}
+        display="flex"
+        fluid
+      >
         <Link href={RoutePath.Home}>
           <LogoImage />
         </Link>
-        <Navbar links={links} />
+        <Navbar links={links} visibleFrom="sm" />
         <UserMenu />
       </Container>
     </LayoutHeader>

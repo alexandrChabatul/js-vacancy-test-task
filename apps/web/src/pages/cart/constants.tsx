@@ -1,6 +1,6 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { PopulatedCartItem, PopulatedHistoryItem } from 'types';
-import { ActionIcon, Group, Image, Text, UnstyledButton } from '@mantine/core';
+import { ActionIcon, Container, Flex, Group, Image, Text, UnstyledButton } from '@mantine/core';
 import { IconMinus, IconPlus, IconX } from '@tabler/icons-react';
 import { userApi } from 'resources/user';
 
@@ -11,12 +11,24 @@ export const cartColumns: ColumnDef<PopulatedCartItem>[] = [
     header: 'Item',
     size: 450,
     cell: ({ row }) => (
-      <Group>
-        <Image src={row.original.product.photoUrl} w={80} h={80} radius={8} />
-        <Text style={{ textAlign: 'left' }} fw="bold">
+      <Flex
+        wrap="nowrap"
+        direction={{ base: 'column', xs: 'row' }}
+        align="center"
+        gap={{ base: 10, xs: 25 }}
+      >
+        <Container w={80} h={80} p={0} m={0}>
+          <Image src={row.original.product.photoUrl} w="100%" h="100%" radius={8} />
+        </Container>
+        <Text
+          style={{ textAlign: 'left' }}
+          fw="bold"
+          lineClamp={2}
+          maw={{ base: 120, xs: 100, md: 300 }}
+        >
           {row.original.product.title}
         </Text>
-      </Group>
+      </Flex>
     ),
   },
   {
@@ -25,7 +37,7 @@ export const cartColumns: ColumnDef<PopulatedCartItem>[] = [
     header: 'Unit price',
     size: 120,
     cell: ({ row }) => (
-      <Text>
+      <Text truncate="end">
         {row.original.product.price.toLocaleString?.('en-US', {
           style: 'currency',
           currency: 'USD',
@@ -102,12 +114,24 @@ export const historyColumns: ColumnDef<PopulatedHistoryItem>[] = [
     header: 'Item',
     size: 450,
     cell: ({ row }) => (
-      <Group>
-        <Image src={row.original.product.photoUrl} w={80} h={80} radius={8} />
-        <Text style={{ textAlign: 'left' }} fw="bold">
+      <Flex
+        wrap="nowrap"
+        direction={{ base: 'column', xs: 'row' }}
+        align="center"
+        gap={{ base: 10, xs: 25 }}
+      >
+        <Container w={80} h={80} p={0} m={0}>
+          <Image src={row.original.product.photoUrl} w="100%" h="100%" radius={8} />
+        </Container>
+        <Text
+          style={{ textAlign: 'left' }}
+          fw="bold"
+          lineClamp={2}
+          maw={{ base: 120, xs: 100, md: 300 }}
+        >
           {row.original.product.title}
         </Text>
-      </Group>
+      </Flex>
     ),
   },
   {
