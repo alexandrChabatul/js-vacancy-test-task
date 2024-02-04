@@ -19,12 +19,10 @@ export const setTokenCookies = ({
     return;
   }
 
-  const parsed = psl.parse(parsedUrl.hostname) as psl.ParsedDomain;
-  const cookiesDomain = parsed.domain || undefined;
-
   ctx.cookies.set(COOKIES.ACCESS_TOKEN, accessToken, {
     httpOnly: true,
-    domain: cookiesDomain,
+    sameSite: 'none',
+    domain: '.cloudns.ph',
     expires: new Date(Date.now() + 10 * 365 * 24 * 60 * 60 * 1000), // 10 years
   });
 };
