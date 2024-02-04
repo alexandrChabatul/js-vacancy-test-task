@@ -16,6 +16,8 @@ export enum RoutePath {
   CartHistory = '/cart/history',
   PaymentSucceed = '/payment/succeed',
   PaymentFailed = '/payment/failed',
+  Products = '/products',
+  ProductsCreate = '/products/create',
 
   // Auth paths
   SignIn = '/sign-in',
@@ -23,10 +25,6 @@ export enum RoutePath {
   ForgotPassword = '/forgot-password',
   ResetPassword = '/reset-password',
   ExpireToken = '/expire-token',
-
-  // Market
-  Products = '/products',
-  ProductsCreate = '/products/create',
 
   NotFound = '/404',
 }
