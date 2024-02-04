@@ -25,7 +25,7 @@ const schema = z.object({
         .positive('Price is required and should be positive number')
         .lte(999999, 'Price should be less than 999999')
     ),
-  file: z.instanceof(File, { message: 'Photo is required.' }),
+  file: z.custom<File>((file) => file instanceof File, 'Photo is required'),
 });
 
 export type CreateProductParams = z.infer<typeof schema>;
