@@ -1,8 +1,7 @@
 import { AppKoaContext, AppRouter, Next } from 'types';
 
 import { productService } from 'resources/product';
-import { firebaseStorageService } from '../../../services';
-import { userService } from '../../user';
+import { firebaseStorageService } from 'services';
 
 type ValidatedData = never;
 type Request = {
@@ -24,9 +23,6 @@ async function handler(ctx: AppKoaContext<ValidatedData, Request>) {
   await Promise.all([
     firebaseStorageService.deleteFile(product!.photoUrl),
     productService.deleteSoft({ _id: ctx.request.params.id }),
-    userService.updateOne({ _id: ctx.state.user._id }, (prev) => ({
-      products: [...prev.products.filter((p) => p._id !== ctx.request.params.id)],
-    })),
   ]);
 
   ctx.status = 204;
