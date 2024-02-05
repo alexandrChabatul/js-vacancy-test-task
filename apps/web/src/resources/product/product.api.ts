@@ -2,6 +2,7 @@ import { useMutation, useQuery } from 'react-query';
 
 import { apiService } from 'services';
 import { Product } from 'types';
+import queryClient from '../../query-client';
 
 export function useUploadPhoto<T>() {
   const uploadPhoto = (data: T) => apiService.post('/products/photo/upload', data);
@@ -24,7 +25,16 @@ export function useCreate<T>() {
 export function useRemove() {
   const removeProduct = (id: string) => apiService.delete(`/products/${id}`);
 
-  return useMutation<void, unknown, string>(removeProduct);
+  interface ProductsListResponse {
+    count: number;
+    items: Product[];
+  }
+
+  return useMutation<ProductsListResponse, unknown, string>(removeProduct, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['my-products']);
+    },
+  });
 }
 
 export function useList<T>(params: T) {
@@ -43,9 +53,8 @@ export function useMyList<T>(params: T) {
   const myList = () => apiService.get('/products/my', params);
 
   interface ProductsListResponse {
-    count: number;
     items: Product[];
-    totalPages: number;
+    count: number;
   }
 
   return useQuery<ProductsListResponse>(['my-products', params], myList);
