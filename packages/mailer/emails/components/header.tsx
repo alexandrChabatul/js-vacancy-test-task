@@ -1,9 +1,7 @@
 import React from 'react';
 import { Column, Img, Row, Section } from '@react-email/components';
 
-// eslint-disable-next-line operator-linebreak
-const logoURL =
-  'https://firebasestorage.googleapis.com/v0/b/paralect-test-app.appspot.com/o/Logo%20-%20%237.png?alt=media&token=c65736c0-4166-44d8-a235-0e338be77c21';
+const logoURL = 'https://i.ibb.co/mJT4szx/Logo-7.png';
 
 const Header = () => (
   <>
