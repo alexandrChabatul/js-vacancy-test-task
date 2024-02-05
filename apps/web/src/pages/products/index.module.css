@@ -1,0 +1,12 @@
+.newProduct {
+  display: flex;
+  flex-direction: column;
+  gap: rem(12);
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+.buttonText {
+  color: var(--mantine-color-custom-blue-5);
+}

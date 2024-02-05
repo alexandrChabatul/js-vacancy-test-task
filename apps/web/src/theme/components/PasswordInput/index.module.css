@@ -1,8 +1,26 @@
 .innerInput {
-  font-size: '16px !important';
+  font-size: 16px !important;
 
   &::placeholder {
-    color: '#6d747b';
+    color: '#a3a3a3 !important';
+  }
+}
+
+.input {
+  font-size: 16px;
+
+  &::placeholder,
+  &:disabled,
+  &:disabled::placeholder {
+    color: '#a3a3a3 !important';
+  }
+
+  &:hover,
+  &:active,
+  &:has(> input:not(:placeholder-shown)) {
+    &[aria-invalid='false'] {
+      border-color: var(--mantine-color-custom-blue-5);
+    }
   }
 }
 
@@ -13,6 +31,7 @@
 }
 
 .label {
-  font-size: 18px;
+  margin-bottom: 8px;
+  font-size: 16px;
   font-weight: 600;
 }

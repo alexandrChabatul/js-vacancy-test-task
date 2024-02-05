@@ -1,9 +1,11 @@
 import { z } from 'zod';
 
-export default z.object({
-  _id: z.string(),
+export default z
+  .object({
+    _id: z.string(),
 
-  createdOn: z.date().optional(),
-  updatedOn: z.date().optional(),
-  deletedOn: z.date().optional().nullable(),
-}).strict();
+    createdOn: z.coerce.date().optional(),
+    updatedOn: z.coerce.date().optional(),
+    deletedOn: z.coerce.date().optional().nullable(),
+  })
+  .strict();

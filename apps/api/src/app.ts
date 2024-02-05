@@ -30,13 +30,13 @@ const initKoa = () => {
   app.use(helmet());
   qs(app as any);
   app.use(bodyParser({
-    enableTypes: ['json', 'form', 'text'],
-    onerror: (err: Error, ctx) => {
-      const errText: string = err.stack || err.toString();
-      logger.warn(`Unable to parse request body. ${errText}`);
-      ctx.throw(422, 'Unable to parse request JSON.');
-    },
-  }));
+      enableTypes: ['json', 'form', 'text'],
+      onerror: (err: Error, ctx) => {
+        const errText: string = err.stack || err.toString();
+        logger.warn(`Unable to parse request body. ${errText}`);
+        ctx.throw(422, 'Unable to parse request JSON.');
+      },
+    }));
   app.use(requestLogger());
 
   routes(app);
@@ -50,7 +50,7 @@ const app = initKoa();
   const server = http.createServer(app.callback());
 
   await Promise.all([
-    ioEmitter.initClient(),
+    // ioEmitter.initClient(),
     socketService(server),
   ]);
 

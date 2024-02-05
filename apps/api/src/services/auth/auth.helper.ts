@@ -9,19 +9,19 @@ import config from 'config';
 export const setTokenCookies = ({
   ctx,
   accessToken,
-}: { ctx: AppKoaContext, accessToken: string }) => {
+}: {
+  ctx: AppKoaContext;
+  accessToken: string;
+}) => {
   const parsedUrl = url.parse(config.WEB_URL);
 
   if (!parsedUrl.hostname) {
     return;
   }
 
-  const parsed = psl.parse(parsedUrl.hostname) as psl.ParsedDomain;
-  const cookiesDomain = parsed.domain || undefined;
-
   ctx.cookies.set(COOKIES.ACCESS_TOKEN, accessToken, {
     httpOnly: true,
-    domain: cookiesDomain,
+    domain: '.cloudns.ph',
     expires: new Date(Date.now() + 10 * 365 * 24 * 60 * 60 * 1000), // 10 years
   });
 };

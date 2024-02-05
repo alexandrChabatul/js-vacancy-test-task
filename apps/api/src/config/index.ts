@@ -16,6 +16,7 @@ const schema = z.object({
   API_URL: z.string(),
   WEB_URL: z.string(),
   SENDGRID_API_KEY: z.string().optional(),
+  SENDGRID_SENDER: z.string().optional(),
   ADMIN_KEY: z.string().optional(),
   MIXPANEL_API_KEY: z.string().optional(),
   CLOUD_STORAGE_ENDPOINT: z.string().optional(),
@@ -24,6 +25,14 @@ const schema = z.object({
   CLOUD_STORAGE_SECRET_ACCESS_KEY: z.string().optional(),
   GOOGLE_CLIENT_ID: z.string().optional(),
   GOOGLE_CLIENT_SECRET: z.string().optional(),
+  FIREBASE_API_KEY: z.string(),
+  FIREBASE_AUTH_DOMAIN: z.string(),
+  FIREBASE_PROJECT_ID: z.string(),
+  FIREBASE_STORAGE_BUCKET: z.string(),
+  FIREBASE_MESSAGING_SENDER_ID: z.string(),
+  FIREBASE_APP_ID: z.any(),
+  STRIPE_SECRET_KEY: z.string(),
+  STRIPE_SIGNING_SECRET: z.string(),
 });
 
 type Config = z.infer<typeof schema>;

@@ -1,0 +1,33 @@
+.link {
+  background-color: transparent;
+  color: var(--mantine-color-custom-grey-4);
+  padding-top: 8px;
+  padding-bottom: 8px;
+  line-height: 24px;
+  border-radius: 20px;
+  text-decoration: none;
+
+  :hover {
+    cursor: pointer;
+  }
+}
+
+.link:hover {
+  color: var(--mantine-color-custom-grey-4);
+  cursor: pointer;
+}
+
+.link:active {
+  color: var(--mantine-color-custom-grey-6);
+}
+
+.linkActive {
+  background-color: var(--mantine-color-custom-grey-2);
+  color: var(--mantine-color-custom-grey-6);
+  font-weight: 500;
+}
+
+.linkActiveText {
+  color: var(--mantine-color-custom-grey-6);
+  font-weight: 500;
+}

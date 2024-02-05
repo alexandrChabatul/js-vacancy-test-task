@@ -1,0 +1,10 @@
+.tableBody {
+  width: min-content;
+  .tableBodyItem:not(:first-child) {
+    padding-left: 16px;
+    width: min-content;
+    @media (min-width: 1024) {
+      padding-left: 56px;
+    }
+  }
+}

@@ -1,0 +1,47 @@
+.input {
+  --_input-size: 0;
+
+  &::placeholder,
+  &:disabled,
+  &:disabled::placeholder {
+    color: '#a3a3a3 !important';
+  }
+
+  &:hover,
+  &:active,
+  &:not(:placeholder-shown) {
+    &[aria-invalid='false'] {
+      border-color: var(--mantine-color-custom-blue-5);
+    }
+  }
+}
+
+.inputError {
+  color: var(--mantine-color-gray-9);
+
+  &,
+  &:focus-within {
+    border-color: var(--mantine-color-red-6);
+  }
+}
+
+.label {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.section {
+  padding-left: 10px;
+}
+
+.root {
+  font-size: 16px;
+
+  &[data-size='sm'] {
+    font-size: 14px;
+    .input {
+      font-size: 14px;
+    }
+  }
+}

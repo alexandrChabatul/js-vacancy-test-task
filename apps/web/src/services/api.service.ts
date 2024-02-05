@@ -29,11 +29,7 @@ export class ApiError extends Error {
     return this.stack;
   }
 }
-const throwApiError = ({
-  status,
-  statusText,
-  data,
-}: any) => {
+const throwApiError = ({ status, statusText, data }: any) => {
   console.error(`API Error: ${status} ${statusText}`, data); //eslint-disable-line
   throw new ApiError(data, status, statusText);
 };
@@ -68,7 +64,7 @@ class ApiClient {
         });
 
         return throwApiError(errorResponse);
-      },
+      }
     );
   }
 
@@ -93,6 +89,15 @@ class ApiClient {
   put(url: string, data: any = {}, requestConfig: AxiosRequestConfig<any> = {}): Promise<any> {
     return this._api({
       method: 'put',
+      url,
+      data,
+      ...requestConfig,
+    });
+  }
+
+  patch(url: string, data: any = {}, requestConfig: AxiosRequestConfig<any> = {}): Promise<any> {
+    return this._api({
+      method: 'patch',
       url,
       data,
       ...requestConfig,

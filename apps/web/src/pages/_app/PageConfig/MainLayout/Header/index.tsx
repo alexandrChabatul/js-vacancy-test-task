@@ -8,10 +8,20 @@ import { RoutePath } from 'routes';
 
 import { LogoImage } from 'public/images';
 
+import { LinkData } from 'components/Navbar/types/link-data.interface';
+import Navbar from 'components/Navbar';
 import UserMenu from './components/UserMenu';
-import ShadowLoginBanner from './components/ShadowLoginBanner';
 
 import classes from './index.module.css';
+
+const links: LinkData[] = [
+  { link: RoutePath.Home, label: 'Marketplace', regex: new RegExp(`^${RoutePath.Home}$`) },
+  {
+    link: RoutePath.Products,
+    label: 'Your Products',
+    regex: new RegExp(`^${RoutePath.Products}`),
+  },
+];
 
 const Header: FC = () => {
   const { data: account } = accountApi.useGet();
@@ -19,19 +29,19 @@ const Header: FC = () => {
   if (!account) return null;
 
   return (
-    <LayoutHeader>
-      {account.isShadow && <ShadowLoginBanner email={account.email} />}
+    <LayoutHeader className={classes.headerWrapper} w="100vw">
       <Container
         className={classes.header}
         mih={72}
-        px={32}
-        py={0}
+        px={{ base: 10, sm: 15, md: 48 }}
+        pt={33}
         display="flex"
         fluid
       >
-        <Link type="router" href={RoutePath.Home}>
+        <Link href={RoutePath.Home}>
           <LogoImage />
         </Link>
+        <Navbar links={links} visibleFrom="sm" />
         <UserMenu />
       </Container>
     </LayoutHeader>

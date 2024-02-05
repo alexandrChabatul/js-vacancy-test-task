@@ -1,18 +1,14 @@
 import React from 'react';
 import { Column, Img, Row, Section } from '@react-email/components';
 
+// eslint-disable-next-line operator-linebreak
 const logoURL = 'https://ship-demo.fra1.cdn.digitaloceanspaces.com/assets/logo.png';
 
 const Header = () => (
   <>
     <Row className="p-6">
       <Column align="center">
-        <Img
-          src={logoURL}
-          width="88"
-          height="44"
-          alt="Ship"
-        />
+        <Img src={logoURL} width="88" height="44" alt="Ship" />
       </Column>
     </Row>
 

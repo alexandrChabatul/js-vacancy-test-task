@@ -24,7 +24,7 @@ async function validator(ctx: AppKoaContext<ValidatedData>, next: Next) {
 
   const user = await userService.findOne({ email });
 
-  if (!user) return ctx.body = {};
+  if (!user) return (ctx.body = {});
 
   ctx.validatedData.user = user;
   await next();
@@ -35,7 +35,9 @@ async function handler(ctx: AppKoaContext<ValidatedData>) {
 
   const resetPasswordToken = await securityUtil.generateSecureToken();
 
-  const resetPasswordUrl = `${config.API_URL}/account/verify-reset-token?token=${resetPasswordToken}&email=${encodeURIComponent(user.email)}`;
+  const resetPasswordUrl = `${
+    config.API_URL
+  }/account/verify-reset-token?token=${resetPasswordToken}&email=${encodeURIComponent(user.email)}`;
 
   await Promise.all([
     userService.updateOne({ _id: user._id }, () => ({ resetPasswordToken })),
@@ -44,7 +46,7 @@ async function handler(ctx: AppKoaContext<ValidatedData>) {
       subject: 'Password Reset Request for Ship',
       template: Template.RESET_PASSWORD,
       params: {
-        firstName: user.firstName,
+        email: user.email,
         href: resetPasswordUrl,
       },
     }),

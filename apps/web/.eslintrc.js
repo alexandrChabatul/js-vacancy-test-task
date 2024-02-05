@@ -6,11 +6,7 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: [
-    'next',
-    'airbnb',
-    'airbnb-typescript',
-  ],
+  extends: ['next', 'airbnb', 'airbnb-typescript', 'prettier'],
   ignorePatterns: ['.eslintrc.js'],
   parserOptions: {
     project: './tsconfig.json',
@@ -20,9 +16,8 @@ module.exports = {
   },
   rules: {
     // solve problem with public folder
-    'import/no-unresolved': [2,
-      { ignore: ['public'] },
-    ],
+    'import/no-unresolved': [2, { ignore: ['public'] }],
+    'implicit-arrow-linebreak': 0,
     'react/prop-types': 'off',
     'react/jsx-key': 'off',
     'react/require-default-props': 'off',
@@ -38,27 +33,30 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'error',
     'object-curly-newline': 'off',
-    'no-restricted-imports': ['error', {
-      name: 'lodash',
-      message: 'Import individual methods from the Lodash module',
-    }],
+    'no-restricted-imports': [
+      'error',
+      {
+        name: 'lodash',
+        message: 'Import individual methods from the Lodash module',
+      },
+    ],
     'max-classes-per-file': 'off',
     'no-proto': 'off',
     'consistent-return': 'off',
     'import/no-extraneous-dependencies': 'off',
     '@next/next/no-img-element': 'off',
-    'react/function-component-definition': [2, {
-      namedComponents: 'arrow-function',
-    }],
+    'react/function-component-definition': [
+      2,
+      {
+        namedComponents: 'arrow-function',
+      },
+    ],
   },
   settings: {
     'import/resolver': {
       node: {
         extensions: ['.ts', '.tsx'],
-        paths: [
-          'src',
-          'node_modules',
-        ],
+        paths: ['src', 'node_modules'],
       },
     },
   },

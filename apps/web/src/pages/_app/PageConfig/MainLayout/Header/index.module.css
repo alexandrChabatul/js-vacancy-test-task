@@ -1,7 +1,14 @@
-.header {
-  background-color: var(--mantine-white);
-  border-bottom: 1px solid var(--mantine-color-gray-4);
+.headerWrapper {
+  display: flex;
+  justify-content: center;
+  background-color: var(--mantine-color-custom-grey-0);
+  border: none;
+}
 
+.header {
+  max-width: 1440px;
+  margin: 0;
+  width: 100%;
   flex: 1 1 auto;
   align-items: center;
   justify-content: space-between;

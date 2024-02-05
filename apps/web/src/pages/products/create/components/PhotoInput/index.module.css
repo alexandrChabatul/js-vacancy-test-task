@@ -1,0 +1,76 @@
+.coverWrapper {
+  position: relative;
+}
+
+.loader {
+  position: absolute;
+  z-index: 10;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.dropzoneRoot {
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  background-color: transparent;
+
+  &:hover .addIcon {
+    color: var(--mantine-color-gray-5);
+  }
+
+  &:hover .innerAvatar {
+    opacity: 1;
+  }
+}
+
+.browseButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 200ms ease-in-out;
+  cursor: pointer;
+}
+
+.addIcon {
+  color: var(--mantine-color-blue-6);
+  transition: all 200ms ease-in-out;
+}
+
+.innerAvatar {
+  border-radius: 50%;
+
+  opacity: 0;
+  transition: all 300ms ease-in-out;
+}
+
+.text {
+  width: 144px;
+  line-height: 24px;
+  color: var(--mantine-color-gray-6);
+  word-wrap: break-word;
+}
+
+.buttonContainer {
+  display: flex;
+  align-items: center;
+}
+
+.errorMessage {
+  margin-top: 4px;
+  margin-bottom: 0;
+  font-size: 14px;
+  line-height: 17px;
+  color: var(--mantine-color-red-5);
+}
+
+.productImageBox {
+  position: relative;
+}
+
+.productImagePencil {
+  position: absolute;
+  top: 0;
+  left: 0;
+}

@@ -1,41 +1,37 @@
 import Link from 'next/link';
 import { memo, FC } from 'react';
-import { Menu } from '@mantine/core';
-import { IconUserCircle, IconLogout } from '@tabler/icons-react';
+import { Group, Indicator, UnstyledButton } from '@mantine/core';
 
 import { accountApi } from 'resources/account';
 
 import { RoutePath } from 'routes';
-
-import MenuToggle from '../MenuToggle';
+import { CartIcon, LogoutIcon } from 'public/icons';
 
 import classes from './index.module.css';
 
 const UserMenu: FC = () => {
+  const { data: user } = accountApi.useGet();
   const { mutate: signOut } = accountApi.useSignOut();
 
+  // ToDo add cart count
   return (
-    <Menu>
-      <Menu.Target>
-        <MenuToggle />
-      </Menu.Target>
-      <Menu.Dropdown className={classes.dropdown}>
-        <Menu.Item
-          component={Link}
-          href={RoutePath.Profile}
-          leftSection={<IconUserCircle size={16} />}
-        >
-          Profile settings
-        </Menu.Item>
-
-        <Menu.Item
-          onClick={() => signOut()}
-          leftSection={<IconLogout size={16} />}
-        >
-          Log out
-        </Menu.Item>
-      </Menu.Dropdown>
-    </Menu>
+    <Group>
+      <Link
+        type="router"
+        href={RoutePath.Cart}
+        style={{ textDecoration: 'none' }}
+        className={classes.iconButton}
+      >
+        <Indicator inline disabled={!user?.cart.length} label={user?.cart.length} size={20}>
+          <UnstyledButton className={classes.iconButton}>
+            <CartIcon />
+          </UnstyledButton>
+        </Indicator>
+      </Link>
+      <UnstyledButton onClick={() => signOut()} className={classes.iconButton}>
+        <LogoutIcon />
+      </UnstyledButton>
+    </Group>
   );
 };
 

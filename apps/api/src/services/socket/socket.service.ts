@@ -1,7 +1,7 @@
 import http from 'http';
 import { Server } from 'socket.io';
 import { createAdapter } from '@socket.io/redis-adapter';
-import pubClient from 'redis-client';
+// import pubClient from 'redis-client';
 
 import { COOKIES } from 'app-constants';
 
@@ -14,17 +14,20 @@ import socketHelper from './socket.helper';
 export default async (server: http.Server) => {
   const io = new Server(server);
 
-  const subClient = pubClient.duplicate();
+  // const subClient = pubClient.duplicate();
 
-  await Promise.all([pubClient.connect(), subClient.connect()]);
+  // await Promise.all([pubClient.connect(), subClient.connect()]);
   logger.info('Socket.io server has been connected');
 
-  io.adapter(createAdapter(pubClient, subClient));
+  // io.adapter(createAdapter(pubClient, subClient));
 
   io.use(async (socket, next) => {
     if (!socket.handshake.headers.cookie) return next(new Error('Cookie not found'));
 
-    const accessToken = socketHelper.getCookie(socket.handshake.headers.cookie, COOKIES.ACCESS_TOKEN);
+    const accessToken = socketHelper.getCookie(
+      socket.handshake.headers.cookie,
+      COOKIES.ACCESS_TOKEN
+    );
     const tokenData = await tokenService.findTokenByValue(accessToken || '');
 
     if (tokenData) {

@@ -58,9 +58,7 @@ const PageConfig: FC<PageConfigProps> = ({ children }) => {
 
   return (
     <Scope>
-      <Layout>
-        {children}
-      </Layout>
+      <Layout>{children}</Layout>
     </Scope>
   );
 };

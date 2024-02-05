@@ -4,3 +4,7 @@ export const getFileKey = (url: string) => {
 
   return pathname.substring(1);
 };
+
+export const getImageUrl = (bucketName: string, fileName: string): string => {
+  return `https://firebasestorage.googleapis.com/v0/b/${bucketName}/${fileName}`;
+};

@@ -5,38 +5,27 @@ import Layout from './_layout';
 import Button from './components/button';
 
 export interface VerifyEmailProps {
-  firstName: string;
+  email: string;
   href: string;
 }
 
-export const VerifyEmail:FC<VerifyEmailProps> = ({
-  firstName = 'John',
+export const VerifyEmail: FC<VerifyEmailProps> = ({
+  email = 'John@gmail.com',
   href = 'https://ship.paralect.com',
 }) => (
-  <Layout previewText="Welcome on board the Ship!">
-    <Text>
-      Dear
-      {' '}
-      {firstName}
-      ,
-    </Text>
+  <Layout previewText="Welcome on board the Shopy!">
+    <Text>Dear {email},</Text>
+
+    <Text>Welcome to Shopy! We are excited to have you on board.</Text>
 
     <Text>
-      Welcome to Ship! We are excited to have you on board.
+      Before we get started, we just need to verify your email address. This is to ensure that you
+      have access to all our features and so we can send you important account notifications.
     </Text>
 
-    <Text>
-      Before we get started, we just need to verify your email address. This is to ensure that you have access to
-      all our features and so we can send you important account notifications.
-    </Text>
+    <Text>Please verify your account by clicking the button below:</Text>
 
-    <Text>
-      Please verify your account by clicking the button below:
-    </Text>
-
-    <Button href={href}>
-      Verify email
-    </Button>
+    <Button href={href}>Verify email</Button>
   </Layout>
 );
 
