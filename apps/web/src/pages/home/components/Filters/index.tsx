@@ -3,6 +3,8 @@ import { CloseIcon, Group, NumberInput, Paper, Stack, Text, Title, rem } from '@
 import { useDebouncedValue, useInputState } from '@mantine/hooks';
 import { ProductsListParams } from '../../types/product-list-params.interface';
 
+import classes from './index.module.css';
+
 interface FiltersProps {
   params: ProductsListParams;
   setParams: Dispatch<SetStateAction<ProductsListParams>>;
@@ -45,7 +47,7 @@ const Filters: FC<FiltersProps> = ({ params, setParams }) => {
             Filters
           </Title>
           <Group onClick={handleResetAll} gap="xs" color="var(--mantine-color-custom-grey-4)">
-            <Text size="sm" c="var(--mantine-color-custom-grey-4)">
+            <Text size="sm" c="var(--mantine-color-custom-grey-4)" className={classes.resetButton}>
               Reset All
             </Text>
             <CloseIcon color="var(--mantine-color-custom-grey-4)" size="14" />
