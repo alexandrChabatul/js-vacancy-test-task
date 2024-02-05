@@ -21,7 +21,9 @@ export function useSignOut() {
 
   return useMutation(signOut, {
     onSuccess: () => {
-      queryClient.setQueryData(['account', 'my-product', 'cart'], null);
+      queryClient.setQueryData(['account'], null);
+      queryClient.setQueryData(['my-products'], null);
+      queryClient.setQueryData(['cart'], null);
     },
   });
 }
